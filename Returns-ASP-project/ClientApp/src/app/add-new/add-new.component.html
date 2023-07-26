@@ -1,0 +1,136 @@
+<h2>Add New</h2>
+<hr />
+
+<div class="center shadow-custom mb-3">
+  <div class="container">
+    <form>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Customer</label>
+          <div class="input-group">
+            <select class="form-select">
+              <option selected></option>
+              <option value="1">Spar</option>
+              <option value="2">Checkers</option>
+              <option value="3">Shoprite</option>
+            </select>
+            <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Product</label>
+          <div class="input-group">
+            <select class="form-select">
+              <option selected></option>
+              <option value="1">Milk</option>
+              <option value="2">Bread</option>
+              <option value="3">Eggs</option>
+            </select>
+            <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-6">
+          <label class="form-label">Qty on Document</label>
+          <input type="number" min="0" class="form-control">
+        </div>
+
+        <div class="mb-3 col-6">
+          <label class="form-label">Qty Returned</label>
+          <input type="number" min="0" class="form-control">
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="input-group mb-3">
+            <div class="input-group-text">
+              <span class="me-3">No Batch Date</span>
+              <input class="form-check-input mt-0" type="checkbox" value="">
+            </div>
+            <input type="text" placeholder="Batch Date" class="form-control">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Owner</label>
+          <div class="input-group">
+            <select class="form-select">
+              <option selected></option>
+              <option value="1">John</option>
+              <option value="2">Mary</option>
+              <option value="3">Paul</option>
+            </select>
+            <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Fault</label>
+          <div class="input-group">
+            <select class="form-select">
+              <option selected></option>
+              <option value="1">Mouldy</option>
+              <option value="2">Sour</option>
+              <option value="3">Expired</option>
+            </select>
+            <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-6">
+          <label class="form-label">External Document No.</label>
+          <input type="text" class="form-control">
+        </div>
+
+        <div class="mb-3 col-6">
+          <label class="form-label">Document Date</label>
+          <input type="date" class="form-control">
+        </div>
+
+
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-6">
+          <label class="form-label">Investigate / Resolved</label>
+          <select class="form-select">
+            <option selected></option>
+            <option value="1">Investigate</option>
+            <option value="2">Resolved</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3 col-12">
+        <label class="form-label">Comment</label>
+        <textarea class="form-control" rows="3" maxlength="255"></textarea>
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <button type="button" [routerLink]="['/']" class="btn-danger btn col-6"><i class="fa fa-cancel"></i> Cancel</button>
+          <button type="submit" class="btn-success btn col-6"><i class="fa fa-save"></i> Save</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+

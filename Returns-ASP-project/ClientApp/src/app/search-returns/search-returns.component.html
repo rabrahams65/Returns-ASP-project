@@ -1,0 +1,104 @@
+<form class="row row-cols-lg-auto g-3 align-items-center">
+  <div class="col-6">
+    <div class="input-group">
+      <div class="text"></div>
+      <input type="text" class="form-control" placeholder="Customer/Product">
+    </div>
+  </div>
+
+  <div class="col-6">
+    <select class="form-select">
+      <option selected></option>
+      <option value="1">Document Date</option>
+      <option value="2">Batch Date</option>
+    </select>
+  </div>
+
+  <div class="col-6">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox">
+      <label class="form-check-label">
+        No Date
+      </label>
+    </div>
+  </div>
+
+  <div class="col-6 invisible">
+    <label>Doc Date - </label>
+  </div>
+
+  <div class="col-6">
+    <div class="input-group">
+      <span class="input-group-text">From</span>
+      <input type="date" class="form-control" />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="input-group">
+      <span class="input-group-text">To</span>
+      <input type="date" class="form-control" />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <button type="submit" class="btn btn-secondary">Search <i class="fa fa-search"></i></button>
+  </div>
+
+</form>
+
+<br />
+
+<table class='table table-striped' aria-labelledby="tableLabel">
+  <thead>
+    <tr class="table-primary">
+      <th>Doc. Date</th>
+      <th>Customer Name</th>
+      <th>Product Name</th>
+      <th>QTY on Doc</th>
+      <th>Batch Date</th>
+      <th>Owner</th>
+      <th>Fault Description</th>
+      <th>Doc. Number</th>
+      <th>QTY Returned</th>
+      <th colspan="2" class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>12/05/2023</td>
+      <td>Spar</td>
+      <td>Bread</td>
+      <td>10</td>
+      <td>14/04/2022</td>
+      <td>John</td>
+      <td>Mouldy</td>
+      <td>#55555</td>
+      <td>8</td>
+      <td><button class="btn-primary btn"><i class="fa fa-edit"></i></button></td>
+      <td><button class="btn-danger btn"><i class="fa fa-trash"></i></button></td>
+    </tr>
+    <tr>
+      <td>07/12/2022</td>
+      <td>Checkers</td>
+      <td>Milk</td>
+      <td>35</td>
+      <td>31/01/2023</td>
+      <td>Mary</td>
+      <td>Sour</td>
+      <td>#33333</td>
+      <td>35</td>
+      <td><button class="btn-primary btn"><i class="fa fa-edit"></i></button></td>
+      <td><button class="btn-danger btn"><i class="fa fa-trash"></i></button></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 mb-3">
+      <button type="button" class="btn-secondary btn col-12">Load Outstanding Returns</button>
+    </div>
+  </div>
+</div>
+
