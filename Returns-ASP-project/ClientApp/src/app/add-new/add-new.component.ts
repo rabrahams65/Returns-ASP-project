@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddNewComponent implements OnInit {
 
+  batchDateToggle = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  toggleBatch() {
+    this.batchDateToggle = !this.batchDateToggle;
   }
 
 }

@@ -12,6 +12,10 @@ import { CustomersComponent } from './customers/customers.component';
 import { ProductsComponent } from './products/products.component';
 import { OwnersComponent } from './owners/owners.component';
 import { FaultsComponent } from './faults/faults.component';
+import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
+import { FaultDetailComponent } from './fault-detail/fault-detail.component';
+import { OwnerDetailComponent } from './owner-detail/owner-detail.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +25,11 @@ import { FaultsComponent } from './faults/faults.component';
     CustomersComponent,
     ProductsComponent,
     OwnersComponent,
-    FaultsComponent
+    FaultsComponent,
+    CustomerDetailComponent,
+    FaultDetailComponent,
+    OwnerDetailComponent,
+    ProductDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,7 +41,11 @@ import { FaultsComponent } from './faults/faults.component';
       { path: 'customers', component: CustomersComponent },
       { path: 'products', component: ProductsComponent },
       { path: 'owners', component: OwnersComponent },
-      { path: 'faults', component: FaultsComponent }
+      { path: 'faults', component: FaultsComponent },
+      { path: 'customer-detail', component: CustomerDetailComponent },
+      { path: 'product-detail', component: ProductDetailComponent },
+      { path: 'owner-detail', component: OwnerDetailComponent },
+      { path: 'fault-detail', component: FaultDetailComponent }
     ])
   ],
   providers: [],

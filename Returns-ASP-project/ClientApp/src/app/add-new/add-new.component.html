@@ -9,13 +9,15 @@
         <div class="mb-3 col-12">
           <label class="form-label">Customer</label>
           <div class="input-group">
-            <select class="form-select">
-              <option selected></option>
-              <option value="1">Spar</option>
-              <option value="2">Checkers</option>
-              <option value="3">Shoprite</option>
-            </select>
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+            <input class="form-control" list="customerDataList">
+            <datalist id="customerDataList">
+              <option value="Spar">
+              <option value="Checkers">
+              <option value="Shoprite">
+              <option value="Engen">
+              <option value="Woolworths">
+            </datalist>
+            <button class="btn btn-outline-secondary" [routerLink]="['/customer-detail']" type="button">+</button>
           </div>
         </div>
       </div>
@@ -24,13 +26,13 @@
         <div class="mb-3 col-12">
           <label class="form-label">Product</label>
           <div class="input-group">
-            <select class="form-select">
-              <option selected></option>
-              <option value="1">Milk</option>
-              <option value="2">Bread</option>
-              <option value="3">Eggs</option>
-            </select>
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+            <input class="form-control" list="productDatalist">
+            <datalist id="productDatalist">
+              <option value="Milk">
+              <option value="Bread">
+              <option value="Eggs">
+            </datalist>
+            <button class="btn btn-outline-secondary" [routerLink]="['/product-detail']" type="button">+</button>
           </div>
         </div>
       </div>
@@ -53,9 +55,9 @@
           <div class="input-group mb-3">
             <div class="input-group-text">
               <span class="me-3">No Batch Date</span>
-              <input class="form-check-input mt-0" type="checkbox" value="">
+              <input class="form-check-input mt-0" type="checkbox" (change)="toggleBatch()" value="">
             </div>
-            <input type="text" placeholder="Batch Date" class="form-control">
+            <input type="date" [disabled]="batchDateToggle" class="form-control">
           </div>
         </div>
 
@@ -65,13 +67,13 @@
         <div class="mb-3 col-12">
           <label class="form-label">Owner</label>
           <div class="input-group">
-            <select class="form-select">
-              <option selected></option>
-              <option value="1">John</option>
-              <option value="2">Mary</option>
-              <option value="3">Paul</option>
-            </select>
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+            <input class="form-control" list="ownerDatalist">
+            <datalist id="ownerDatalist">
+              <option value="John">
+              <option value="Mary">
+              <option value="Paul">
+            </datalist>
+            <button class="btn btn-outline-secondary" [routerLink]="['/owner-detail']"  type="button">+</button>
           </div>
         </div>
       </div>
@@ -80,13 +82,13 @@
         <div class="mb-3 col-12">
           <label class="form-label">Fault</label>
           <div class="input-group">
-            <select class="form-select">
-              <option selected></option>
-              <option value="1">Mouldy</option>
-              <option value="2">Sour</option>
-              <option value="3">Expired</option>
-            </select>
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+            <input class="form-control" list="faultDatalist">
+            <datalist id="faultDatalist">
+              <option value="Mouldy">
+              <option value="Sour">
+              <option value="Expired">
+            </datalist>
+            <button class="btn btn-outline-secondary" [routerLink]="['/fault-detail']"  type="button">+</button>
           </div>
         </div>
       </div>
@@ -109,9 +111,8 @@
         <div class="mb-3 col-6">
           <label class="form-label">Investigate / Resolved</label>
           <select class="form-select">
-            <option selected></option>
-            <option value="1">Investigate</option>
-            <option value="2">Resolved</option>
+            <option selected value="1">Resolved</option>
+            <option value="2">Investigate</option>
           </select>
         </div>
       </div>
@@ -124,8 +125,8 @@
 
       <div class="row">
         <div class="col-md-12 mb-3">
-          <button type="button" [routerLink]="['/']" class="btn-danger btn col-6"><i class="fa fa-cancel"></i> Cancel</button>
-          <button type="submit" class="btn-success btn col-6"><i class="fa fa-save"></i> Save</button>
+          <button type="button" [routerLink]="['/']" class="btn-outline-danger btn col-6"><i class="fa fa-cancel"></i> Cancel</button>
+          <button type="submit" class="btn-outline-success btn col-6"><i class="fa fa-save"></i> Save</button>
         </div>
       </div>
 
