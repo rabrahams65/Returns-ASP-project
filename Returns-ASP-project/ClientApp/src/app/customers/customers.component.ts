@@ -7,6 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomersComponent implements OnInit {
 
+  customerList: any = [
+    "Spar",
+    "Checkers",
+    "Shoprite",
+    "Woolworths",
+    "Pick n Pay"
+    ]
+
   constructor() { }
 
   ngOnInit(): void {

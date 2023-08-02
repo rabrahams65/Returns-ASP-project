@@ -1,1 +1,54 @@
-<p>product-detail works!</p>
+<h3>Add New Product</h3>
+<hr />
+
+<div class="center shadow-custom mb-3">
+  <div class="container">
+    <form>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Product Name</label>
+          <input class="form-control" list="productDataList">
+          <datalist id="productDataList">
+            <option value="Milk">
+            <option value="Eggs">
+            <option value="Bread">
+          </datalist>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Weight</label>
+          <input type="number" class="form-control">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Price</label>
+          <input type="number" class="form-control">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">SKU</label>
+          <input type="text" class="form-control">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <button type="button" [routerLink]="['/']" class="btn-outline-danger btn col-6"><i class="fa fa-cancel"></i> Cancel</button>
+          <button type="submit" class="btn-outline-success btn col-6"><i class="fa fa-save"></i> Save</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+
+

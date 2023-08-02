@@ -21,6 +21,7 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
   declarations: [
     AppComponent,
     NavMenuComponent,
+    SearchReturnsComponent,
     AddNewComponent,
     CustomersComponent,
     ProductsComponent,
@@ -42,10 +43,10 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
       { path: 'products', component: ProductsComponent },
       { path: 'owners', component: OwnersComponent },
       { path: 'faults', component: FaultsComponent },
-      { path: 'customer-detail', component: CustomerDetailComponent },
-      { path: 'product-detail', component: ProductDetailComponent },
-      { path: 'owner-detail', component: OwnerDetailComponent },
-      { path: 'fault-detail', component: FaultDetailComponent }
+      { path: 'customer-detail/:customerId', component: CustomerDetailComponent },
+      { path: 'product-detail/:productId', component: ProductDetailComponent },
+      { path: 'owner-detail/:ownerId', component: OwnerDetailComponent },
+      { path: 'fault-detail/:faultId', component: FaultDetailComponent }
     ])
   ],
   providers: [],

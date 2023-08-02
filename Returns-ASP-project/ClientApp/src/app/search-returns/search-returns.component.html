@@ -1,6 +1,7 @@
-<form class="row row-cols-lg-auto g-3 align-items-center">
+<form class="row row-cols-lg-auto g-3 mb-3 align-items-center">
   <div class="col-6">
     <div class="input-group">
+      <span class="input-group-text">Filter</span>
       <div class="text"></div>
       <input type="text" class="form-control" placeholder="Customer/Product">
     </div>
@@ -42,14 +43,12 @@
   </div>
 
   <div class="col-6">
-    <button type="submit" class="btn btn-secondary">Search <i class="fa fa-search"></i></button>
+    <button (click)="search()" type="submit" class="btn btn-secondary">Search <i class="fa fa-search"></i></button>
   </div>
 
 </form>
 
-<br />
-
-<table class='table table-striped' aria-labelledby="tableLabel">
+<table class='table table-striped'>
   <thead>
     <tr class="table-primary">
       <th>Doc. Date</th>
@@ -65,40 +64,26 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>12/05/2023</td>
-      <td>Spar</td>
-      <td>Bread</td>
-      <td>10</td>
-      <td>14/04/2022</td>
-      <td>John</td>
-      <td>Mouldy</td>
-      <td>#55555</td>
-      <td>8</td>
-      <td><button class="btn-primary btn"><i class="fa fa-edit"></i></button></td>
-      <td><button class="btn-danger btn"><i class="fa fa-trash"></i></button></td>
-    </tr>
-    <tr>
-      <td>07/12/2022</td>
-      <td>Checkers</td>
-      <td>Milk</td>
-      <td>35</td>
-      <td>31/01/2023</td>
-      <td>Mary</td>
-      <td>Sour</td>
-      <td>#33333</td>
-      <td>35</td>
+    <tr *ngFor="let return of returns">
+      <td>{{return?.docDate | date}}</td>
+      <td>{{return?.customer}}</td>
+      <td>{{return?.product}}</td>
+      <td class="text-center">{{return?.qtyOnDoc}}</td>
+      <td>{{return?.batchDate}}</td>
+      <td>{{return?.owner}}</td>
+      <td>{{return?.fault}}</td>
+      <td>{{return?.docNo}}</td>
+      <td class="text-center">{{return?.qtyReturned}}</td>
       <td><button class="btn-primary btn"><i class="fa fa-edit"></i></button></td>
       <td><button class="btn-danger btn"><i class="fa fa-trash"></i></button></td>
     </tr>
   </tbody>
 </table>
 
-<div class="container">
   <div class="row">
     <div class="col-md-12 mb-3">
       <button type="button" class="btn-secondary btn col-12">Load Outstanding Returns</button>
     </div>
   </div>
-</div>
+
 

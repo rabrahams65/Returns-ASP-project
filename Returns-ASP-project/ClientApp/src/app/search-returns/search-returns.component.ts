@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ReturnService } from './../api/services/return.service';
+import { ReturnRm } from '../api/models';
 
 @Component({
   selector: 'app-search-returns',
@@ -7,17 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchReturnsComponent implements OnInit {
 
-  searchResult: any = [
-    "Bread",
-    "Milk",
-    "Eggs"
-  ]
+  returns: ReturnRm[] = []
 
   docDateInvisible: boolean = true;
   noDateInvisible: boolean = true;
   noDateChecked = false;
 
-  constructor() { }
+  constructor(private returnService: ReturnService) { }
 
   ngOnInit(): void {
   }
@@ -40,4 +38,17 @@ export class SearchReturnsComponent implements OnInit {
     }
   }
 
+  search() {
+    this.returnService.searchReturn({})
+      .subscribe(response => this.returns = response,
+        this.handleError)
+  }
+
+  private handleError(err: any) {
+
+    console.log(err);
+  }
+
 }
+
+

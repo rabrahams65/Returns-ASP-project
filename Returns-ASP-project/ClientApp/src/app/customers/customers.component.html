@@ -1,6 +1,7 @@
 <h2>Customers</h2>
 <hr />
 
+
 <form class="row g-3 align-items-center">
   <div class="col-10">
     <div class="input-group">
@@ -9,7 +10,7 @@
     </div>
   </div>
 
-  <div class="col-2">
+  <div class="col-1">
     <button type="submit" class="btn btn-secondary">Search <i class="fa fa-search"></i></button>
   </div>
 
@@ -25,29 +26,20 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Spar</td>
+    <tr *ngFor="let customer of customerList">
+      <td>{{customer}}</td>
       <td>
-        <button class="btn-primary btn me-3" [routerLink]="['/customer-detail']"><i class="fa fa-edit"></i></button>
-        <button class="btn-danger btn"><i class="fa fa-trash"></i></button>
-      </td>
-    </tr>
-    <tr>
-      <td>Checkers</td>
-      <td>
-        <button class="btn-primary btn me-3" [routerLink]="['/customer-detail']"><i class="fa fa-edit"></i></button>
-        <button class="btn-danger btn"><i class="fa fa-trash"></i></button>
-      </td>
-    </tr>
-    <tr>
-      <td>Shoprite</td>
-      <td>
-        <button class="btn-primary btn me-3" [routerLink]="['/customer-detail']"><i class="fa fa-edit"></i></button>
+        <button class="btn-primary btn me-3" [routerLink]="['/customer-detail','customerId']"><i class="fa fa-edit"></i></button>
         <button class="btn-danger btn"><i class="fa fa-trash"></i></button>
       </td>
     </tr>
   </tbody>
 </table>
+
+<div class="row col-12">
+  <button type="button" class="btn btn-secondary" [routerLink]="['/customer-detail']"><i class="fa fa-plus"></i> Add New Customer</button>
+</div>
+
 
 
 
