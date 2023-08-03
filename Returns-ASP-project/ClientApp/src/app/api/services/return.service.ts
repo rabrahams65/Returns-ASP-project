@@ -103,4 +103,95 @@ export class ReturnService extends BaseService {
     );
   }
 
+  /** Path part for operation `findReturn()` */
+  static readonly FindReturnPath = '/Return/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findReturn$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findReturn$Plain$Response(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<ReturnRm>> {
+    const rb = new RequestBuilder(this.rootUrl, ReturnService.FindReturnPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'text', accept: 'text/plain', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ReturnRm>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `findReturn$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findReturn$Plain(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<ReturnRm> {
+    return this.findReturn$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ReturnRm>): ReturnRm => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findReturn()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findReturn$Response(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<ReturnRm>> {
+    const rb = new RequestBuilder(this.rootUrl, ReturnService.FindReturnPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'text/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ReturnRm>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `findReturn$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findReturn(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<ReturnRm> {
+    return this.findReturn$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ReturnRm>): ReturnRm => r.body)
+    );
+  }
+
 }

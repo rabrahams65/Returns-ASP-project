@@ -6,11 +6,13 @@
         string Customer,
         string Product,
         int QtyOnDoc,
-        string BatchDate,
+        DateTime BatchDate,
         string Owner,
         string Fault,
         string DocNo,
         bool NoBatchDate,
-        int QtyReturned
+        int QtyReturned,
+        bool resolved,
+        string Comment
         );
 }

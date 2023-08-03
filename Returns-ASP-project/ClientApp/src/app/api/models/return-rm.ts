@@ -2,6 +2,7 @@
 /* eslint-disable */
 export interface ReturnRm {
   batchDate?: null | string;
+  comment?: null | string;
   customer?: null | string;
   docDate?: string;
   docNo?: null | string;
@@ -12,4 +13,5 @@ export interface ReturnRm {
   product?: null | string;
   qtyOnDoc?: number;
   qtyReturned?: number;
+  resolved?: boolean;
 }

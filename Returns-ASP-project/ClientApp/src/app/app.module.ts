@@ -16,6 +16,7 @@ import { CustomerDetailComponent } from './customer-detail/customer-detail.compo
 import { FaultDetailComponent } from './fault-detail/fault-detail.component';
 import { OwnerDetailComponent } from './owner-detail/owner-detail.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ReturnDetailComponent } from './return-detail/return-detail.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
     CustomerDetailComponent,
     FaultDetailComponent,
     OwnerDetailComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    ReturnDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -38,11 +40,13 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: SearchReturnsComponent, pathMatch: 'full' },
+      { path: 'search-return', component: SearchReturnsComponent },
       { path: 'add-new', component: AddNewComponent },
       { path: 'customers', component: CustomersComponent },
       { path: 'products', component: ProductsComponent },
       { path: 'owners', component: OwnersComponent },
       { path: 'faults', component: FaultsComponent },
+      { path: 'return-detail/:returnId', component: ReturnDetailComponent },
       { path: 'customer-detail/:customerId', component: CustomerDetailComponent },
       { path: 'product-detail/:productId', component: ProductDetailComponent },
       { path: 'owner-detail/:ownerId', component: OwnerDetailComponent },
