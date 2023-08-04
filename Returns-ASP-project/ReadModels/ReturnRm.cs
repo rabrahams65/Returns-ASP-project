@@ -6,7 +6,7 @@
         string Customer,
         string Product,
         int QtyOnDoc,
-        DateTime BatchDate,
+        DateTime? BatchDate,
         string Owner,
         string Fault,
         string DocNo,

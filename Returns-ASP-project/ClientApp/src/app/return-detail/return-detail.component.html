@@ -1,4 +1,4 @@
-<h2>Add New Return</h2>
+<h2>Edit</h2>
 <hr />
 
 <div class="center shadow-custom mb-3">
@@ -54,9 +54,9 @@
           <div class="input-group mb-3">
             <div class="input-group-text">
               <span class="me-3">No Batch Date</span>
-              <input class="form-check-input mt-0" type="checkbox" (change)="toggleBatch()" value="">
+              <input class="form-check-input mt-0" type="checkbox" #batchChecked (change)="toggleBatch(); batchDateBox.value = ''" [checked]="return.batchDate == null ? true : false">
             </div>
-            <input type="date" [disabled]="batchDateToggle" class="form-control"  [value]="return.batchDate | date:'yyyy-MM-dd'">
+            <input type="date" #batchDateBox [disabled]="batchChecked.checked" class="form-control" [value]="return.batchDate | date:'yyyy-MM-dd'">
           </div>
         </div>
 
@@ -110,8 +110,9 @@
         <div class="mb-3 col-6">
           <label class="form-label">Investigate / Resolved</label>
           <select class="form-select">
-            <option selected [value]="1" ></option>
-            <option value="2">Investigate</option>
+            <option #selection selected [value]="return.resolved == true ? 'Resolved' : 'Investigate'">{{selection.value}}</option>
+            <option value="true">Resolved</option>
+            <option value="false">Investigate</option>
           </select>
         </div>
       </div>

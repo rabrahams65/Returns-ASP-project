@@ -13,7 +13,7 @@ export class ReturnDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, private returnService: ReturnService) { }
 
   returnId: string = 'not loaded';
-  batchDateToggle = false;
+  batchDateDisable = false;
   return: ReturnRm = {};
 
   ngOnInit(): void {
@@ -31,7 +31,7 @@ export class ReturnDetailComponent implements OnInit {
   }
 
   toggleBatch() {
-    this.batchDateToggle = !this.batchDateToggle;
+    this.batchDateDisable = !this.batchDateDisable;
   }
 
 

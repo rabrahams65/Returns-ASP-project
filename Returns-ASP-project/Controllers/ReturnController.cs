@@ -17,7 +17,7 @@ namespace Returns_ASP_project.Controllers
                 "Spar",
                 "Bread",
                 10,
-                new DateTime(),
+                null,
                 "John",
                 "Mouldy",
                 "555555",
