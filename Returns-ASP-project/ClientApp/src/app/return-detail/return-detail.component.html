@@ -1,14 +1,14 @@
 <h2>Edit</h2>
 <hr />
 
-<div class="center shadow-custom mb-3">
-  <div class="container">
-    <form>
+<form [formGroup]="form" (ngSubmit)="save()">
+  <div class="center shadow-custom mb-3">
+    <div class="container">
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Customer</label>
           <div class="input-group">
-            <input class="form-control" list="customerDataList" value="{{return.customer}}"> 
+            <input formControlName="customer" class="form-control" list="customerDataList" value="{{return.customer}}">
             <datalist id="customerDataList">
               <option value="Spar" id="1">
               <option value="Checkers">
@@ -25,7 +25,7 @@
         <div class="mb-3 col-12">
           <label class="form-label">Product</label>
           <div class="input-group">
-            <input class="form-control" list="productDatalist"  value="{{return.product}}">
+            <input formControlName="product" class="form-control" list="productDatalist" value="{{return.product}}">
             <datalist id="productDatalist">
               <option value="Milk">
               <option value="Bread">
@@ -39,12 +39,12 @@
       <div class="row">
         <div class="mb-3 col-6">
           <label class="form-label">Qty on Document</label>
-          <input type="number" min="0" class="form-control" value="{{return.qtyOnDoc}}">
+          <input formControlName="qtyOnDoc" type="number" min="0" class="form-control" value="{{return.qtyOnDoc}}">
         </div>
 
         <div class="mb-3 col-6">
           <label class="form-label">Qty Returned</label>
-          <input type="number" min="0" class="form-control" value="{{return.qtyReturned}}">
+          <input formControlName="qtyReturned" type="number" min="0" class="form-control" value="{{return.qtyReturned}}">
         </div>
 
       </div>
@@ -56,7 +56,7 @@
               <span class="me-3">No Batch Date</span>
               <input class="form-check-input mt-0" type="checkbox" #batchChecked (change)="toggleBatch(); batchDateBox.value = ''" [checked]="return.batchDate == null ? true : false">
             </div>
-            <input type="date" #batchDateBox [disabled]="batchChecked.checked" class="form-control" [value]="return.batchDate | date:'yyyy-MM-dd'">
+            <input formControlName="batchDate" type="date" #batchDateBox [disabled]="batchChecked.checked" class="form-control" [value]="return.batchDate | date:'yyyy-MM-dd'">
           </div>
         </div>
 
@@ -66,7 +66,7 @@
         <div class="mb-3 col-12">
           <label class="form-label">Owner</label>
           <div class="input-group">
-            <input class="form-control" list="ownerDatalist" value="{{return.owner}}">
+            <input formControlName="owner" class="form-control" list="ownerDatalist" value="{{return.owner}}">
             <datalist id="ownerDatalist">
               <option value="John">
               <option value="Mary">
@@ -81,7 +81,7 @@
         <div class="mb-3 col-12">
           <label class="form-label">Fault</label>
           <div class="input-group">
-            <input class="form-control" list="faultDatalist" value="{{return.fault}}">
+            <input formControlName="fault" class="form-control" list="faultDatalist" value="{{return.fault}}">
             <datalist id="faultDatalist">
               <option value="Mouldy">
               <option value="Sour">
@@ -95,31 +95,28 @@
       <div class="row">
         <div class="mb-3 col-6">
           <label class="form-label">External Document No.</label>
-          <input type="text" class="form-control" value="{{return.docNo}}">
+          <input formControlName="docNo" type="text" class="form-control" value="{{return.docNo}}">
         </div>
 
         <div class="mb-3 col-6">
           <label class="form-label">Document Date</label>
-          <input type="date" class="form-control" [value]="return.docDate | date:'yyyy-MM-dd'" >
+          <input formControlName="docDate" type="date" class="form-control" [value]="return.docDate | date:'yyyy-MM-dd'">
         </div>
-
-
       </div>
 
       <div class="row">
         <div class="mb-3 col-6">
           <label class="form-label">Investigate / Resolved</label>
           <select class="form-select">
-            <option #selection selected [value]="return.resolved == true ? 'Resolved' : 'Investigate'">{{selection.value}}</option>
-            <option value="true">Resolved</option>
-            <option value="false">Investigate</option>
+            <option formControlName="resolved" #selection selected [value]="return.resolved == true ? 'Resolved' : 'Investigate'">{{selection.value}}</option>
+            <option [value]="return.resolved == true ? false : true" [label]="return.resolved == true ? 'Investigate' : 'Resolved'"></option>
           </select>
         </div>
       </div>
 
       <div class="mb-3 col-12">
         <label class="form-label">Comment</label>
-        <textarea class="form-control" rows="3" maxlength="255">{{return.comment}}</textarea>
+        <textarea formControlName="comment" class="form-control" rows="3" maxlength="255">{{return.comment}}</textarea>
       </div>
 
 
@@ -130,9 +127,11 @@
         </div>
       </div>
 
-    </form>
+    </div>
   </div>
-</div>
+</form>
+
+
 
 
 

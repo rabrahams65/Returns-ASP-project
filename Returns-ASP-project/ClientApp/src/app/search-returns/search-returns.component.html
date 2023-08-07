@@ -9,8 +9,7 @@
 
   <div class="col-6">
     <select class="form-select" (change)="toggleNoDate($event)">
-      <option selected></option>
-      <option value="documentDate">Document Date</option>
+      <option selected value="documentDate">Document Date</option>
       <option value="batchDate">Batch Date</option>
     </select>
   </div>
@@ -55,11 +54,11 @@
       <th>Customer Name</th>
       <th>Product Name</th>
       <th>QTY on Doc</th>
+      <th>QTY Returned</th>
       <th>Batch Date</th>
       <th>Owner</th>
       <th>Fault Description</th>
       <th>Doc. Number</th>
-      <th>QTY Returned</th>
       <th colspan="2" class="text-center">Actions</th>
     </tr>
   </thead>
@@ -69,12 +68,12 @@
       <td>{{return?.customer}}</td>
       <td>{{return?.product}}</td>
       <td class="text-center">{{return?.qtyOnDoc}}</td>
-      <td>{{return?.batchDate}}</td>
+      <td class="text-center">{{return?.qtyReturned}}</td>
+      <td>{{return?.batchDate | date}}</td>
       <td>{{return?.owner}}</td>
       <td>{{return?.fault}}</td>
       <td>{{return?.docNo}}</td>
-      <td class="text-center">{{return?.qtyReturned}}</td>
-      <td><button [routerLink]="['return-detail', return.id]" class="btn-primary btn"><i class="fa fa-edit"></i></button></td>
+      <td><button [routerLink]="['/return-detail', return.id]" class="btn-primary btn"><i class="fa fa-edit"></i></button></td>
       <td><button class="btn-danger btn"><i class="fa fa-trash"></i></button></td>
     </tr>
   </tbody>

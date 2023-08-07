@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { ReturnService } from './services/return.service';
+import { UserService } from './services/user.service';
 
 /**
  * Module that provides all services and configuration.
@@ -15,6 +16,7 @@ import { ReturnService } from './services/return.service';
   declarations: [],
   providers: [
     ReturnService,
+    UserService,
     ApiConfiguration
   ],
 })

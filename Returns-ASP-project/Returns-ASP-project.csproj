@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\Detail-Components\" />
+    <Folder Include="ClientApp\src\app\auth\" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

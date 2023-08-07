@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface ReturnRm {
-  batchDate?: string;
+  batchDate?: null | string;
   comment?: null | string;
   customer?: null | string;
   docDate?: string;

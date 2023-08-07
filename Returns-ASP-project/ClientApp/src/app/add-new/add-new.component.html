@@ -54,9 +54,9 @@
           <div class="input-group mb-3">
             <div class="input-group-text">
               <span class="me-3">No Batch Date</span>
-              <input class="form-check-input mt-0" type="checkbox" (change)="toggleBatch()" value="">
+              <input class="form-check-input mt-0" type="checkbox" (change)="toggleBatch(); batchDateBox.value = ''">
             </div>
-            <input type="date" [disabled]="batchDateToggle" class="form-control">
+            <input type="date" #batchDateBox [disabled]="batchDateToggle" class="form-control">
           </div>
         </div>
 

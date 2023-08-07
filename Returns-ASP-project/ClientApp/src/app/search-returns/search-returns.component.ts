@@ -45,7 +45,8 @@ export class SearchReturnsComponent implements OnInit {
   }
 
   private handleError(err: any) {
-
+    console.log("Response Error. Status: ", err.status)
+    console.log("Response Error. Status: ", err.statusText)
     console.log(err);
   }
 

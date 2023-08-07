@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -17,6 +17,7 @@ import { FaultDetailComponent } from './fault-detail/fault-detail.component';
 import { OwnerDetailComponent } from './owner-detail/owner-detail.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ReturnDetailComponent } from './return-detail/return-detail.component';
+import { RegisterUserComponent } from './register-user/register-user.component';
 
 @NgModule({
   declarations: [
@@ -32,15 +33,17 @@ import { ReturnDetailComponent } from './return-detail/return-detail.component';
     FaultDetailComponent,
     OwnerDetailComponent,
     ProductDetailComponent,
-    ReturnDetailComponent
+    ReturnDetailComponent,
+    RegisterUserComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: SearchReturnsComponent, pathMatch: 'full' },
-      { path: 'search-return', component: SearchReturnsComponent },
+      { path: 'search-returns', component: SearchReturnsComponent },
       { path: 'add-new', component: AddNewComponent },
       { path: 'customers', component: CustomersComponent },
       { path: 'products', component: ProductsComponent },
@@ -50,7 +53,8 @@ import { ReturnDetailComponent } from './return-detail/return-detail.component';
       { path: 'customer-detail/:customerId', component: CustomerDetailComponent },
       { path: 'product-detail/:productId', component: ProductDetailComponent },
       { path: 'owner-detail/:ownerId', component: OwnerDetailComponent },
-      { path: 'fault-detail/:faultId', component: FaultDetailComponent }
+      { path: 'fault-detail/:faultId', component: FaultDetailComponent },
+      { path: 'register-user', component: RegisterUserComponent }
     ])
   ],
   providers: [],
