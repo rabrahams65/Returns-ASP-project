@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReturnRm } from '../api/models/return-rm';
@@ -10,39 +10,47 @@ import { AuthService } from '../auth/auth.service';
   templateUrl: './return-detail.component.html',
   styleUrls: ['./return-detail.component.css']
 })
-export class ReturnDetailComponent implements OnInit {
+export class ReturnDetailComponent implements OnInit, AfterViewInit {
+  @ViewChild('batchDateBox', { static: true }) batchDateBoxRef?: ElementRef<HTMLElement>;
 
   constructor(private route: ActivatedRoute, private returnService: ReturnService, private router: Router, private authService: AuthService,
-              private fb: FormBuilder) { }
+    private fb: FormBuilder) { }
+
+
+  ngAfterViewInit() {
+    this._batchDate = this.getBatch!
+    console.log(this._batchDate+ " after")
+  }
 
   returnId: string = 'not loaded';
   batchDateDisable = false;
   return: ReturnRm = {};
-
-  form = this.fb.group({
-    customer: [''],
-    product: [''],
-    qtyOnDoc: [0],
-    qtyReturned: [0],
-    batchDate: new FormControl({ value: null, disabled: this.batchDateDisable }),
-    owner: [''],
-    fault: [''],
-    docNo: [''],
-    docDate: [],
-    resolved: [],
-    comment: ['']
-    })
+  _batchDate: any;
+  form: any;
 
   ngOnInit(): void {
 
-    if (!this.authService.currentUser) {
-      this.router.navigate(['/register-user'])
-    }
+    //if (!this.authService.currentUser) {
+    //  this.router.navigate(['/register-user'])
+    //}
     this.route.paramMap.subscribe(p => this.findReturn(p.get("returnId")));
 
-    console.log(this.returnId);
-    console.log(this.return);
+    this.form = this.fb.group({
+      customer: [''],
+      product: [''],
+      qtyOnDoc: [0],
+      qtyReturned: [0],
+      batchDate: [this.getBatch],
+      owner: [''],
+      fault: [''],
+      docNo: [''],
+      docDate: [],
+      resolved: [],
+      comment: ['']
+    })
 
+
+   
   }
 
   private findReturn = (returnId: string | null) => {
@@ -53,6 +61,21 @@ export class ReturnDetailComponent implements OnInit {
 
   toggleBatch() {
     this.batchDateDisable = !this.batchDateDisable;
+
+    if (this.batchDateDisable == true && this.return.batchDate?.length! > 1) {
+      this.form.controls['batchDate'].disable()
+      this.form.controls.batchDate.setValue(null)
+    }
+    else if (this.batchDateDisable == false && this.return.batchDate?.length! > 1) {
+      this.form.controls['batchDate'].enable()
+    }
+    else if (this.batchDateDisable == true ) {
+      this.form.controls['batchDate'].enable()
+      this.form.controls.batchDate.setValue(null)
+    }
+    else if (this.batchDateDisable == false) {
+      this.form.controls['batchDate'].disable()
+    }
   }
 
   private handleError = (err: any) => {
@@ -68,6 +91,10 @@ export class ReturnDetailComponent implements OnInit {
 
   save() {
     console.log("Return submitted for " + this.form.get('customer')?.value! + "."  )
+  }
+
+  getBatch(val: any):any {
+    return val
   }
 
 

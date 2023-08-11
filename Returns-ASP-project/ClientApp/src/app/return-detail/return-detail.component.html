@@ -54,9 +54,9 @@
           <div class="input-group mb-3">
             <div class="input-group-text">
               <span class="me-3">No Batch Date</span>
-              <input class="form-check-input mt-0" type="checkbox" #batchChecked (change)="toggleBatch(); batchDateBox.value = ''" [checked]="return.batchDate == null ? true : false">
+              <input class="form-check-input mt-0" type="checkbox" #batchChecked (change)="toggleBatch()" [checked]="return.batchDate == null ? true : false">
             </div>
-            <input formControlName="batchDate" type="date" #batchDateBox [disabled]="batchChecked.checked" class="form-control" [value]="return.batchDate | date:'yyyy-MM-dd'">
+            <input formControlName="batchDate" type="date" #batchDateBox [readonly]="batchChecked.checked == true ? true : false" class="form-control" [value]="return.batchDate | date:'yyyy-MM-dd'">
           </div>
         </div>
 
@@ -107,8 +107,8 @@
       <div class="row">
         <div class="mb-3 col-6">
           <label class="form-label">Investigate / Resolved</label>
-          <select class="form-select">
-            <option formControlName="resolved" #selection selected [value]="return.resolved == true ? 'Resolved' : 'Investigate'">{{selection.value}}</option>
+          <select formControlName="resolved" class="form-select">
+            <option #selection selected [value]="return.resolved == true ? 'Resolved' : 'Investigate'">{{selection.value}}</option>
             <option [value]="return.resolved == true ? false : true" [label]="return.resolved == true ? 'Investigate' : 'Resolved'"></option>
           </select>
         </div>
