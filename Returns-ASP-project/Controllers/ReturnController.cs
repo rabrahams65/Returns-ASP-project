@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Returns_ASP_project.ReadModels;
+using Returns_ASP_project.Dtos;
 
 namespace Returns_ASP_project.Controllers
 {
@@ -10,7 +11,7 @@ namespace Returns_ASP_project.Controllers
        
         private readonly ILogger<ReturnController> _logger;
 
-        private static ReturnRm[] _returns =  new ReturnRm[]
+        private static List<ReturnRm> _returns =  new List<ReturnRm>
         {
             new (Guid.NewGuid(),
                 new DateTime(2022,04,14),
@@ -21,7 +22,6 @@ namespace Returns_ASP_project.Controllers
                 "John",
                 "Mouldy",
                 "555555",
-                true,
                 16,
                 true,
                 ""
@@ -35,7 +35,6 @@ namespace Returns_ASP_project.Controllers
                 "Mary",
                 "Sour",
                 "333333",
-                false,
                 35,
                 false,
                 "testing"
@@ -49,14 +48,13 @@ namespace Returns_ASP_project.Controllers
                 "Paul",
                 "Expired",
                 "888888",
-                false,
                 6,
                 false,
                 "testing"
                 ),
         };
 
-        private readonly ReturnRm[] returns = _returns;
+        private readonly List<ReturnRm> returns = _returns;
 
         public ReturnController(ILogger<ReturnController> logger)
         {
@@ -83,5 +81,23 @@ namespace Returns_ASP_project.Controllers
 
             return Ok(singleReturn);
         }
+
+
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ReturnRm), StatusCodes.Status200OK)]
+        [HttpPost]
+        public IActionResult CreateReturn(CreateReturnDto dto)
+        {
+     
+            var readModel = new ReturnRm(Guid.NewGuid(), dto.DocDate, dto.Customer, dto.Product, dto.QtyOnDoc, dto.BatchDate, dto.Owner, dto.Fault, dto.DocNo, dto.QtyReturned, dto.resolved, dto.Comment);
+            _returns.Add(readModel);
+
+            return CreatedAtAction(nameof(Find), new { id = readModel.Id });
+  
+        }
+
+            
     }
 }

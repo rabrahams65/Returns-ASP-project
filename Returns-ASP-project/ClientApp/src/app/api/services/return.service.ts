@@ -10,6 +10,7 @@ import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 import { RequestBuilder } from '../request-builder';
 
+import { CreateReturnDto } from '../models/create-return-dto';
 import { ReturnRm } from '../models/return-rm';
 
 @Injectable({ providedIn: 'root' })
@@ -100,6 +101,97 @@ export class ReturnService extends BaseService {
   ): Observable<Array<ReturnRm>> {
     return this.searchReturn$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<ReturnRm>>): Array<ReturnRm> => r.body)
+    );
+  }
+
+  /** Path part for operation `createReturnReturn()` */
+  static readonly CreateReturnReturnPath = '/Return';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `createReturnReturn$Plain()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  createReturnReturn$Plain$Response(
+    params?: {
+      body?: CreateReturnDto
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<ReturnRm>> {
+    const rb = new RequestBuilder(this.rootUrl, ReturnService.CreateReturnReturnPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/*+json');
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'text', accept: 'text/plain', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ReturnRm>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `createReturnReturn$Plain$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  createReturnReturn$Plain(
+    params?: {
+      body?: CreateReturnDto
+    },
+    context?: HttpContext
+  ): Observable<ReturnRm> {
+    return this.createReturnReturn$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ReturnRm>): ReturnRm => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `createReturnReturn()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  createReturnReturn$Response(
+    params?: {
+      body?: CreateReturnDto
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<ReturnRm>> {
+    const rb = new RequestBuilder(this.rootUrl, ReturnService.CreateReturnReturnPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/*+json');
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'text/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ReturnRm>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `createReturnReturn$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  createReturnReturn(
+    params?: {
+      body?: CreateReturnDto
+    },
+    context?: HttpContext
+  ): Observable<ReturnRm> {
+    return this.createReturnReturn$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ReturnRm>): ReturnRm => r.body)
     );
   }
 

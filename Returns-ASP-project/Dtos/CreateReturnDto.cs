@@ -1,9 +1,12 @@
-﻿namespace Returns_ASP_project.ReadModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Returns_ASP_project.Dtos
 {
-    public record ReturnRm(
-        Guid Id,
+    public record CreateReturnDto(
         DateTime? DocDate,
+        [Required]
         string Customer,
+        [Required]
         string Product,
         int QtyOnDoc,
         DateTime? BatchDate,
@@ -12,6 +15,6 @@
         string DocNo,
         int QtyReturned,
         bool resolved,
-        string Comment
-        );
+        string Comment);
+
 }

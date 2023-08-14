@@ -1,12 +1,15 @@
 <h2>Edit</h2>
 <hr />
 
-<form [formGroup]="form" (ngSubmit)="save()">
+<form [formGroup]="form" (ngSubmit)="update()">
   <div class="center shadow-custom mb-3">
     <div class="container">
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Customer</label>
+          <div *ngIf="customer.invalid && (customer.touched || customer.dirty)" class="invalid-feedback d-block">
+            <div *ngIf="customer.errors?.['required']">Customer is required</div>
+          </div>
           <div class="input-group">
             <input formControlName="customer" class="form-control" list="customerDataList" value="{{return.customer}}">
             <datalist id="customerDataList">
@@ -24,6 +27,9 @@
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Product</label>
+          <div *ngIf="product.invalid && (product.touched || product.dirty)" class="invalid-feedback d-block">
+            <div *ngIf="product.errors?.['required']">Product is required</div>
+          </div>
           <div class="input-group">
             <input formControlName="product" class="form-control" list="productDatalist" value="{{return.product}}">
             <datalist id="productDatalist">
@@ -95,11 +101,17 @@
       <div class="row">
         <div class="mb-3 col-6">
           <label class="form-label">External Document No.</label>
+          <div *ngIf="docNo.invalid && (docNo.touched || docNo.dirty)" class="invalid-feedback d-block">
+            <div *ngIf="docNo.errors?.['required']">Document Number is required</div>
+          </div>
           <input formControlName="docNo" type="text" class="form-control" value="{{return.docNo}}">
         </div>
 
         <div class="mb-3 col-6">
           <label class="form-label">Document Date</label>
+          <div *ngIf="docDate.invalid && (docDate.touched || docDate.dirty)" class="invalid-feedback d-block">
+            <div *ngIf="docDate.errors?.['required']">Document Date is required</div>
+          </div>
           <input formControlName="docDate" type="date" class="form-control" [value]="return.docDate | date:'yyyy-MM-dd'">
         </div>
       </div>
@@ -108,8 +120,10 @@
         <div class="mb-3 col-6">
           <label class="form-label">Investigate / Resolved</label>
           <select formControlName="resolved" class="form-select">
-            <option #selection selected [value]="return.resolved == true ? 'Resolved' : 'Investigate'">{{selection.value}}</option>
-            <option [value]="return.resolved == true ? false : true" [label]="return.resolved == true ? 'Investigate' : 'Resolved'"></option>
+            <option *ngIf="return.resolved == true" value=true>Resolved</option>
+            <option *ngIf="return.resolved == false" value=false>Investigate</option>
+            <option *ngIf="return.resolved == true" value=false>Investigate</option>
+            <option *ngIf="return.resolved == false" value=true>Resolved</option>
           </select>
         </div>
       </div>
@@ -118,7 +132,6 @@
         <label class="form-label">Comment</label>
         <textarea formControlName="comment" class="form-control" rows="3" maxlength="255">{{return.comment}}</textarea>
       </div>
-
 
       <div class="row">
         <div class="col-md-12 mb-3">

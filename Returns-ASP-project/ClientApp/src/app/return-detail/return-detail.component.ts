@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReturnRm } from '../api/models/return-rm';
 import { ReturnService } from '../api/services';
@@ -11,22 +11,38 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./return-detail.component.css']
 })
 export class ReturnDetailComponent implements OnInit, AfterViewInit {
-  @ViewChild('batchDateBox', { static: true }) batchDateBoxRef?: ElementRef<HTMLElement>;
+  @ViewChild('resolvedDropdown', { static: true }) resolvedDropdownRef?: ElementRef<HTMLElement>;
+  form: FormGroup;
 
   constructor(private route: ActivatedRoute, private returnService: ReturnService, private router: Router, private authService: AuthService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) {
+
+    this.form = this.fb.group({
+      customer: ['', Validators.required],
+      product: ['', Validators.required],
+      qtyOnDoc: [0],
+      qtyReturned: [0],
+      batchDate: [],
+      owner: [''],
+      fault: [''],
+      docNo: ['', Validators.required],
+      docDate: [, Validators.required],
+      resolved: [],
+      comment: ['']
+    })
+
+    //use again if default resolved dropdown does not work again.
+    //this.form.controls['resolved'].setValue("Test", { onlySelf: true });
+}
 
 
   ngAfterViewInit() {
-    this._batchDate = this.getBatch!
-    console.log(this._batchDate+ " after")
+ 
   }
 
   returnId: string = 'not loaded';
   batchDateDisable = false;
   return: ReturnRm = {};
-  _batchDate: any;
-  form: any;
 
   ngOnInit(): void {
 
@@ -35,23 +51,10 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
     //}
     this.route.paramMap.subscribe(p => this.findReturn(p.get("returnId")));
 
-    this.form = this.fb.group({
-      customer: [''],
-      product: [''],
-      qtyOnDoc: [0],
-      qtyReturned: [0],
-      batchDate: [this.getBatch],
-      owner: [''],
-      fault: [''],
-      docNo: [''],
-      docDate: [],
-      resolved: [],
-      comment: ['']
-    })
 
-
-   
   }
+
+ 
 
   private findReturn = (returnId: string | null) => {
     this.returnId = returnId ?? 'not passed';
@@ -89,13 +92,46 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
     console.log(err);
   }
 
-  save() {
-    console.log("Return submitted for " + this.form.get('customer')?.value! + "."  )
+  update() {
+
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return
+    }
+
+    const createdReturn: ReturnRm = {
+      docDate: this.form.controls.docDate.value!,
+      customer: this.form.controls.customer.value!,
+      product: this.form.controls.product.value!,
+      qtyOnDoc: this.form.controls.qtyOnDoc.value!,
+      batchDate: this.form.controls.batchDate.value!,
+      owner: this.form.controls.owner.value!,
+      fault: this.form.controls.fault.value!,
+      docNo: this.form.controls.docNo.value!,
+      qtyReturned: this.form.controls.qtyReturned.value!,
+      resolved: this.form.controls.resolved.value!,
+      comment: this.form.controls.comment.value!
+
+    }
+
+    this.returnService.createReturnReturn({ body: createdReturn }).subscribe(_ => console.log("Succeeded", console.error))
   }
 
-  getBatch(val: any):any {
-    return val
+  //getters
+  get customer() {
+    return this.form.controls.customer
   }
 
+  get product() {
+    return this.form.controls.product
+  }
+
+  get docDate() {
+    return this.form.controls.docDate
+  }
+
+  get docNo() {
+    return this.form.controls.docNo
+  }
 
 }
