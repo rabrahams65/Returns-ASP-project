@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ReturnService } from './../api/services/return.service';
 import { ReturnDto, ReturnRm } from '../api/models';
 
+
+declare var window: any;
+
 @Component({
   selector: 'app-search-returns',
   templateUrl: './search-returns.component.html',
@@ -10,14 +13,18 @@ import { ReturnDto, ReturnRm } from '../api/models';
 export class SearchReturnsComponent implements OnInit {
 
   returns: ReturnRm[] = []
-
   docDateInvisible: boolean = true;
   noDateInvisible: boolean = true;
   noDateChecked = false;
+  deleteModal: any;
+  returnToDelete: ReturnRm = {};
 
   constructor(private returnService: ReturnService) { }
 
   ngOnInit(): void {
+    this.deleteModal = new window.bootstrap.Modal(
+      document.getElementById("staticBackdrop")
+    );
   }
 
   toggleDocDate() {
@@ -50,11 +57,13 @@ export class SearchReturnsComponent implements OnInit {
     console.log(err);
   }
 
-  public deleteReturn(returnRm: ReturnRm) {
+  deleteReturn() { 
+
+    var returnRm = this.returnToDelete;
 
     const returnDto: ReturnDto = {
-      id : returnRm.id,
-      batchDate : returnRm.batchDate,
+      id: returnRm.id,
+      batchDate: returnRm.batchDate,
       comment: returnRm.comment,
       customer: returnRm.customer,
       docDate: returnRm.docDate,
@@ -65,11 +74,16 @@ export class SearchReturnsComponent implements OnInit {
       qtyOnDoc: returnRm.qtyOnDoc,
       qtyReturned: returnRm.qtyReturned,
       resolved: returnRm.resolved
+    }
 
+    this.returnService.deleteReturnReturn({ body: returnRm }).subscribe(r => this.returns = this.returns.filter(f => f != returnRm), this.handleError)
 
-      }
+    this.deleteModal.hide();
+  }
 
-    this.returnService.deleteReturnReturn({ body: returnRm }).subscribe(r => this.returns = this.returns.filter(f => f != returnRm) , this.handleError)
+  public openDeleteModal = (returnRm: ReturnRm) => {
+
+    this.returnToDelete = returnRm;
 
   }
 
