@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReturnService } from './../api/services/return.service';
-import { ReturnRm } from '../api/models';
+import { ReturnDto, ReturnRm } from '../api/models';
 
 @Component({
   selector: 'app-search-returns',
@@ -50,6 +50,28 @@ export class SearchReturnsComponent implements OnInit {
     console.log(err);
   }
 
-}
+  public deleteReturn(returnRm: ReturnRm) {
 
+    const returnDto: ReturnDto = {
+      id : returnRm.id,
+      batchDate : returnRm.batchDate,
+      comment: returnRm.comment,
+      customer: returnRm.customer,
+      docDate: returnRm.docDate,
+      docNo: returnRm.docNo,
+      fault: returnRm.fault,
+      owner: returnRm.owner,
+      product: returnRm.product,
+      qtyOnDoc: returnRm.qtyOnDoc,
+      qtyReturned: returnRm.qtyReturned,
+      resolved: returnRm.resolved
+
+
+      }
+
+    this.returnService.deleteReturnReturn({ body: returnRm }).subscribe(r => this.returns = this.returns.filter(f => f != returnRm) , this.handleError)
+
+  }
+
+}
 

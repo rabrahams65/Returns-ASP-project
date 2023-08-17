@@ -74,7 +74,7 @@
       <td>{{return?.fault}}</td>
       <td>{{return?.docNo}}</td>
       <td><button [routerLink]="['/return-detail', return.id]" class="btn-primary btn"><i class="fa fa-edit"></i></button></td>
-      <td><button class="btn-danger btn"><i class="fa fa-trash"></i></button></td>
+      <td><button (click)="deleteReturn(return)" class="btn-danger btn"><i class="fa fa-trash"></i></button></td>
     </tr>
   </tbody>
 </table>

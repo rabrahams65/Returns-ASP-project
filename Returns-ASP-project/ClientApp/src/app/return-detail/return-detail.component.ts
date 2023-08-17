@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ReturnDto } from '../api/models';
 import { ReturnRm } from '../api/models/return-rm';
 import { ReturnService } from '../api/services';
 import { AuthService } from '../auth/auth.service';
@@ -99,7 +100,7 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
       return
     }
 
-    const createdReturn: ReturnRm = {
+    const createdReturn: ReturnDto = {
       docDate: this.form.controls.docDate.value!,
       customer: this.form.controls.customer.value!,
       product: this.form.controls.product.value!,

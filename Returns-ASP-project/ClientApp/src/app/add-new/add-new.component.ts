@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CreateReturnDto, ReturnRm } from '../api/models';
+import { ReturnDto, ReturnRm } from '../api/models';
 import { ReturnService } from '../api/services';
 
 @Component({
@@ -43,7 +43,7 @@ export class AddNewComponent implements OnInit {
       return
   }
 
-    const createdReturn: CreateReturnDto = {
+    const createdReturn: ReturnDto = {
       docDate: this.form.get('docDate')?.value!,
       customer: this.form.get('customer')?.value!,
       product: this.form.get('product')?.value!,

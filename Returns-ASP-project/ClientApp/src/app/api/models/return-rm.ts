@@ -4,13 +4,13 @@ export interface ReturnRm {
   batchDate?: null | string;
   comment?: null | string;
   customer?: null | string;
-  docDate?: string;
+  docDate?: null | string;
   docNo?: null | string;
   fault?: null | string;
   id?: string;
   owner?: null | string;
   product?: null | string;
-  qtyOnDoc?: number;
-  qtyReturned?: number;
-  resolved?: boolean;
+  qtyOnDoc?: null | number;
+  qtyReturned?: null | number;
+  resolved?: null | boolean;
 }

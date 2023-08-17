@@ -10,7 +10,7 @@ import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 import { RequestBuilder } from '../request-builder';
 
-import { CreateReturnDto } from '../models/create-return-dto';
+import { ReturnDto } from '../models/return-dto';
 import { ReturnRm } from '../models/return-rm';
 
 @Injectable({ providedIn: 'root' })
@@ -115,7 +115,7 @@ export class ReturnService extends BaseService {
    */
   createReturnReturn$Plain$Response(
     params?: {
-      body?: CreateReturnDto
+      body?: ReturnDto
     },
     context?: HttpContext
   ): Observable<StrictHttpResponse<ReturnRm>> {
@@ -142,7 +142,7 @@ export class ReturnService extends BaseService {
    */
   createReturnReturn$Plain(
     params?: {
-      body?: CreateReturnDto
+      body?: ReturnDto
     },
     context?: HttpContext
   ): Observable<ReturnRm> {
@@ -159,7 +159,7 @@ export class ReturnService extends BaseService {
    */
   createReturnReturn$Response(
     params?: {
-      body?: CreateReturnDto
+      body?: ReturnDto
     },
     context?: HttpContext
   ): Observable<StrictHttpResponse<ReturnRm>> {
@@ -186,12 +186,59 @@ export class ReturnService extends BaseService {
    */
   createReturnReturn(
     params?: {
-      body?: CreateReturnDto
+      body?: ReturnDto
     },
     context?: HttpContext
   ): Observable<ReturnRm> {
     return this.createReturnReturn$Response(params, context).pipe(
       map((r: StrictHttpResponse<ReturnRm>): ReturnRm => r.body)
+    );
+  }
+
+  /** Path part for operation `deleteReturnReturn()` */
+  static readonly DeleteReturnReturnPath = '/Return';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deleteReturnReturn()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  deleteReturnReturn$Response(
+    params?: {
+      body?: ReturnDto
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<void>> {
+    const rb = new RequestBuilder(this.rootUrl, ReturnService.DeleteReturnReturnPath, 'delete');
+    if (params) {
+      rb.body(params.body, 'application/*+json');
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'text', accept: '*/*', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deleteReturnReturn$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  deleteReturnReturn(
+    params?: {
+      body?: ReturnDto
+    },
+    context?: HttpContext
+  ): Observable<void> {
+    return this.deleteReturnReturn$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 
