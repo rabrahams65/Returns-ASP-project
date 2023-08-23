@@ -24,7 +24,7 @@ builder.Services.AddSwaggerGen( c =>
     c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"] + e.ActionDescriptor.RouteValues["controller"]}");
 });
 
-builder.Services.AddSingleton<Entities>();
+builder.Services.AddScoped<Entities>();
 
 var app = builder.Build();
 

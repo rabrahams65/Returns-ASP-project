@@ -110,6 +110,31 @@ namespace Returns_ASP_project.Controllers
 
         }
 
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(204)]
+        [HttpPut("{id}")]
+        public ActionResult UpdateReturn(Guid id, Return singleReturn)
+        {
+            if(id != singleReturn.Id)
+            {
+                return BadRequest();
+            }
+
+            _entities.Entry(singleReturn).State= EntityState.Modified;
+
+            try
+            {
+                _entities.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                return Conflict(new { message = "An error occured while trying to edit the return. Please try again. " + e.Message });
+            }
+
+            return NoContent();
+        }
             
     }
 }

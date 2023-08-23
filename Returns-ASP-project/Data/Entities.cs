@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 using Returns_ASP_project.Domain.Entities;
 
 namespace Returns_ASP_project.Data

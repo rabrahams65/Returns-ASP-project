@@ -10,6 +10,7 @@ import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 import { RequestBuilder } from '../request-builder';
 
+import { Return } from '../models/return';
 import { ReturnDto } from '../models/return-dto';
 import { ReturnRm } from '../models/return-rm';
 
@@ -330,6 +331,56 @@ export class ReturnService extends BaseService {
   ): Observable<ReturnRm> {
     return this.findReturn$Response(params, context).pipe(
       map((r: StrictHttpResponse<ReturnRm>): ReturnRm => r.body)
+    );
+  }
+
+  /** Path part for operation `updateReturnReturn()` */
+  static readonly UpdateReturnReturnPath = '/Return/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `updateReturnReturn()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  updateReturnReturn$Response(
+    params: {
+      id: string;
+      body?: Return
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<void>> {
+    const rb = new RequestBuilder(this.rootUrl, ReturnService.UpdateReturnReturnPath, 'put');
+    if (params) {
+      rb.path('id', params.id, {});
+      rb.body(params.body, 'application/*+json');
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'text', accept: '*/*', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `updateReturnReturn$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  updateReturnReturn(
+    params: {
+      id: string;
+      body?: Return
+    },
+    context?: HttpContext
+  ): Observable<void> {
+    return this.updateReturnReturn$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 
