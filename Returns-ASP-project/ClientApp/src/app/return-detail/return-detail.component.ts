@@ -6,8 +6,7 @@ import { Return, ReturnDto } from '../api/models';
 import { ReturnRm } from '../api/models/return-rm';
 import { ReturnService } from '../api/services';
 import { AuthService } from '../auth/auth.service';
-
-declare var bootstrap: any;
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-return-detail',
@@ -19,7 +18,7 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
   //form: FormGroup;
 
   constructor(private route: ActivatedRoute, private returnService: ReturnService, private router: Router, private authService: AuthService,
-    private fb: FormBuilder, @Inject(LOCALE_ID) private locale: string) {
+    private fb: FormBuilder, @Inject(LOCALE_ID) private locale: string, private appService: AppService) {
 
 /*    this.form = this.fb.group({})*/
     
@@ -38,7 +37,7 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
   batchDateDisable = false;
   return: ReturnRm = {};
   message = 'Something went wrong...';
-  toast = document.getElementById('toast')
+
 
   form = this.fb.group({
     customer: ['', Validators.required],
@@ -169,14 +168,15 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
       //this.form.markAllAsTouched();
       return
     }
-    if (this.form.valid) {
-      this.message = 'Return deleted successfully'
+    if (this.form.valid && this.form.dirty && this.form.touched) {
+      this.message = 'Return updated successfully'
+    }
+    else if (this.form.valid && !this.form.touched && !this.form.dirty) {
+      this.message = 'Nothing updated'
     }
   
-    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(document.getElementById('toast'))
-    toastBootstrap.show()
-    this.returnService.updateReturnReturn({ id: this.returnId, body: editedReturn }).subscribe(_ => toastBootstrap.show(),this.handleError)
-    //this.router.navigate(['/']);
+    this.returnService.updateReturnReturn({ id: this.returnId, body: editedReturn }).subscribe(_ => this.appService.setMessage(this.message),this.handleError)
+    this.router.navigate(['/']);
   }
 
   //getters

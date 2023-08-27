@@ -17,6 +17,11 @@
   </div>
 </div>
 
+<div style="float:right" class="mx-5">
+  <ngb-toast *ngIf="showToast" header="Info" [autohide]="false" (hidden)="showToast=false" style="z-index: 100; position: absolute;">
+    {{messageFromDetail}}
+  </ngb-toast>
+</div>
 
 <form class="row row-cols-lg-auto g-3 mb-3 align-items-center">
   <div class="col-6">
@@ -104,5 +109,7 @@
     <button type="button" class="btn-secondary btn col-12">Load Outstanding Returns</button>
   </div>
 </div>
+
+
 
 

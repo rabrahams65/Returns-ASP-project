@@ -18,6 +18,8 @@ import { OwnerDetailComponent } from './owner-detail/owner-detail.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ReturnDetailComponent } from './return-detail/return-detail.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { RegisterUserComponent } from './register-user/register-user.component';
       { path: 'owner-detail/:ownerId', component: OwnerDetailComponent },
       { path: 'fault-detail/:faultId', component: FaultDetailComponent },
       { path: 'register-user', component: RegisterUserComponent }
-    ])
+    ]),
+    NgbModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReturnService } from './../api/services/return.service';
 import { ReturnDto, ReturnRm } from '../api/models';
+import { AppService } from '../app.service';
 
 
 declare var window: any;
@@ -18,8 +19,16 @@ export class SearchReturnsComponent implements OnInit {
   noDateChecked = false;
   deleteModal: any;
   returnToDelete: ReturnRm = {};
+  showToast = true;
+  messageFromDetail = '';
 
-  constructor(private returnService: ReturnService) { }
+  constructor(private returnService: ReturnService, private appService: AppService) {
+
+    this.appService.getMessage.subscribe(m => this.messageFromDetail = m, this.handleError)
+    this.appService.getMessage.subscribe(m => { (m == 'Initial Message') ? this.showToast = false : this.showToast = true })
+
+    setTimeout(() => (this.showToast = false), 3000);
+  }
 
   ngOnInit(): void {
     this.deleteModal = new window.bootstrap.Modal(
@@ -86,6 +95,5 @@ export class SearchReturnsComponent implements OnInit {
     this.returnToDelete = returnRm;
 
   }
-
 }
 
