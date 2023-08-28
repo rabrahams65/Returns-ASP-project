@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReturnDto, ReturnRm } from '../api/models';
 import { ReturnService } from '../api/services';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-add-new',
@@ -13,7 +14,7 @@ export class AddNewComponent implements OnInit {
 
   batchDateToggle = false;
 
-  constructor(private fb: FormBuilder, private returnService: ReturnService, private router: Router) { }
+  constructor(private fb: FormBuilder, private returnService: ReturnService, private router: Router, private appService: AppService) { }
 
   ngOnInit(): void {
   }
@@ -32,6 +33,9 @@ export class AddNewComponent implements OnInit {
     comment: ['']
   })
 
+  showToast = false;
+  message = 'Something went wrong'
+
 
   toggleBatch() {
     this.batchDateToggle = !this.batchDateToggle;
@@ -41,7 +45,10 @@ export class AddNewComponent implements OnInit {
     if (this.form.invalid) {
       this.form.markAllAsTouched()
       return
-  }
+    }
+
+    this.message = 'Return Saved'
+    this.showToast = true
 
     const createdReturn: ReturnDto = {
       docDate: this.form.get('docDate')?.value!,
@@ -57,7 +64,10 @@ export class AddNewComponent implements OnInit {
       comment: this.form.get('comment')?.value!
     }
 
-    this.returnService.createReturnReturn({ body: createdReturn }).subscribe(_ => this.router.navigate(['/search-returns']),this.handleError)
+
+
+    this.returnService.createReturnReturn({ body: createdReturn }).subscribe(_ => { this.appService.setMessage(this.message); this.appService.showToast(this.showToast) }, this.handleError)
+    this.router.navigate(['/search-returns'])
   }
 
   private handleError = (err: any) => {

@@ -19,15 +19,22 @@ export class SearchReturnsComponent implements OnInit {
   noDateChecked = false;
   deleteModal: any;
   returnToDelete: ReturnRm = {};
-  showToast = true;
+  showToast = false;
   messageFromDetail = '';
 
   constructor(private returnService: ReturnService, private appService: AppService) {
 
-    this.appService.getMessage.subscribe(m => this.messageFromDetail = m, this.handleError)
-    this.appService.getMessage.subscribe(m => { (m == 'Initial Message') ? this.showToast = false : this.showToast = true })
+    //this.appService.getMessage.subscribe(m => this.messageFromDetail = m, this.handleError)
+    this.appService.getToast.subscribe(t => {
+      this.showToast = t;
 
-    setTimeout(() => (this.showToast = false), 3000);
+      if (this.showToast == true) {
+        this.appService.getMessage.subscribe(m => this.messageFromDetail = m )
+        setTimeout(() => (this.showToast = false), 3000);
+      }
+
+    })
+
   }
 
   ngOnInit(): void {

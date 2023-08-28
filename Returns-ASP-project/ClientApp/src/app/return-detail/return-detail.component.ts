@@ -37,6 +37,7 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
   batchDateDisable = false;
   return: ReturnRm = {};
   message = 'Something went wrong...';
+  showToast = false;
 
 
   form = this.fb.group({
@@ -170,12 +171,14 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
     }
     if (this.form.valid && this.form.dirty && this.form.touched) {
       this.message = 'Return updated successfully'
+      this.showToast = true
     }
     else if (this.form.valid && !this.form.touched && !this.form.dirty) {
       this.message = 'Nothing updated'
+      this.showToast = true
     }
   
-    this.returnService.updateReturnReturn({ id: this.returnId, body: editedReturn }).subscribe(_ => this.appService.setMessage(this.message),this.handleError)
+    this.returnService.updateReturnReturn({ id: this.returnId, body: editedReturn }).subscribe(_ => { this.appService.setMessage(this.message); this.appService.showToast(this.showToast)},this.handleError)
     this.router.navigate(['/']);
   }
 
