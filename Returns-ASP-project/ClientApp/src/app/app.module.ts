@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from './auth/auth.guard';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -46,7 +47,7 @@ import { AppRoutingModule } from './app-routing.module';
     RouterModule.forRoot([
       { path: '', component: SearchReturnsComponent, pathMatch: 'full' },
       { path: 'search-returns', component: SearchReturnsComponent },
-      { path: 'add-new', component: AddNewComponent },
+      { path: 'add-new', component: AddNewComponent, canActivate: [AuthGuard] },
       { path: 'customers', component: CustomersComponent },
       { path: 'products', component: ProductsComponent },
       { path: 'owners', component: OwnersComponent },

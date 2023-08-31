@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../api/services';
 import { AuthService } from '../auth/auth.service';
 
@@ -11,7 +11,9 @@ import { AuthService } from '../auth/auth.service';
 })
 export class RegisterUserComponent implements OnInit {
 
-  constructor(private userService: UserService, private fb: FormBuilder, private authService: AuthService, private router: Router) { }
+  constructor(private userService: UserService, private fb: FormBuilder, private authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute) { }
+
+  requestedUrl?: string = undefined
 
   form = this.fb.group({
     email: [''],
@@ -20,6 +22,7 @@ export class RegisterUserComponent implements OnInit {
     })
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe(p => this.requestedUrl = p['requestedUrl'])
   }
 
   checkUser(): void {
@@ -40,7 +43,7 @@ export class RegisterUserComponent implements OnInit {
 
   private login = () => {
     this.authService.loginUser({ email: this.form.get('email')?.value! })
-    this.router.navigate(['/search-returns'])
+    this.router.navigate([this.requestedUrl ?? '/search-returns'])
   }
 
 }
