@@ -74,7 +74,7 @@
 
 <table class='table table-striped'>
   <thead>
-    <tr class="table-primary">
+    <tr>
       <th>Doc. Date</th>
       <th>Customer Name</th>
       <th>Product Name</th>
@@ -88,21 +88,45 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let return of returns">
+    <tr *ngFor="let return of returns | slice: (page-1) * pageSize : page * pageSize">
       <td>{{return?.docDate | date}}</td>
-      <td>{{return?.customer}}</td>
-      <td>{{return?.product}}</td>
+      <td>{{return?.customerId}}</td>
+      <td>{{return?.productId}}</td>
       <td class="text-center">{{return?.qtyOnDoc}}</td>
       <td class="text-center">{{return?.qtyReturned}}</td>
       <td>{{return?.batchDate | date}}</td>
-      <td>{{return?.owner}}</td>
-      <td>{{return?.fault}}</td>
+      <td>{{return?.ownerId}}</td>
+      <td>{{return?.faultId}}</td>
       <td>{{return?.docNo}}</td>
       <td><button [routerLink]="['/return-detail', return.id]" class="btn-primary btn"><i class="fa fa-edit"></i></button></td>
       <td><button (click)="openDeleteModal(return)" class="btn-danger btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa fa-trash"></i></button></td>
     </tr>
   </tbody>
 </table>
+
+<ngb-pagination *ngIf="collectionSize != 0"
+                class="d-flex justify-content-center"
+                [collectionSize]="collectionSize"
+                [(page)]="page"
+                [boundaryLinks]="true"
+                (pageChange)="search"
+                [maxSize]="5"
+                [ellipses]="false"></ngb-pagination>
+
+<!--<div>
+  <select class="form-select d-flex justify-content-end" style="width: auto" name="pageSize" [(ngModel)]="pageSize">
+    <option [selected] [ngValue]="2">2 items per page</option>
+    <option [ngValue]="2">2 items per page</option>
+    <option [ngValue]="4">4 items per page</option>
+    <option [ngValue]="6">6 items per page</option>
+  </select>
+</div>-->
+
+
+<hr />
+<div class="text-end">
+  <p>Number of results: {{numberOfResults}}</p>
+</div>
 
 <div class="row">
   <div class="col-md-12 mb-3">

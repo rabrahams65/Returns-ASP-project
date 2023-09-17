@@ -10,7 +10,7 @@
     </div>
   </div>
 
-  <div class="col-1">
+  <div class="col-2">
     <button type="submit" class="btn btn-secondary">Search <i class="fa fa-search"></i></button>
   </div>
 
@@ -20,16 +20,22 @@
 
 <table class='table table-striped' aria-labelledby="tableLabel">
   <thead>
-    <tr class="table-primary">
-      <th class="col-10">Customer Name</th>
+    <tr>
+      <th class="col-2">Short Code</th>
+      <th class="col-2">Customer Name</th>
+      <th class="col-2">Email Address</th>
+      <th class="col-4">Address</th>
       <th class="col-2">Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let customer of customerList">
-      <td>{{customer}}</td>
+      <td>{{customer.shortCode}}</td>
+      <td>{{customer.customerName}}</td>
+      <td>{{customer.email}}</td>
+      <td>{{customer.address}}</td>
       <td>
-        <button class="btn-primary btn me-3" [routerLink]="['/customer-detail','customerId']"><i class="fa fa-edit"></i></button>
+        <button class="btn-primary btn me-3" [routerLink]="['/customer-detail', customer.id ]"><i class="fa fa-edit"></i></button>
         <button class="btn-danger btn"><i class="fa fa-trash"></i></button>
       </td>
     </tr>

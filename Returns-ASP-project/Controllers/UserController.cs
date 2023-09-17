@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Returns_ASP_project.Data;
 using Returns_ASP_project.Domain.Entities;
 using Returns_ASP_project.Dtos;
@@ -44,6 +45,7 @@ namespace Returns_ASP_project.Controllers
                 return NotFound();
 
             var rm = new UserRm(
+                user.Id,
                 user.Email,
                 user.FirstName,
                 user.LastName
@@ -51,5 +53,57 @@ namespace Returns_ASP_project.Controllers
 
             return Ok(rm);
         }
+
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(204)]
+        [HttpPut("{id}")]
+        public ActionResult Update(Guid id, User user)
+        {
+            if(id != user.Id)
+            {
+                return BadRequest();
+            }
+
+            _entities.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                _entities.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                return Conflict(new { message = $"An unexpected error occurred. Please try again. {e.Message}" });
+            }
+
+            return NoContent();
+        }
+
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(204)]
+        [HttpDelete]
+        public ActionResult Delete(Guid id)
+        {
+            var user = _entities.Users.Single( u => u.Id == id);
+
+            if (user == null) return NotFound();
+
+            _entities.Users.Remove(user);
+
+            try
+            {
+                _entities.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return Conflict(new { message = $"The error of type {e.GetType().Name} occured" });
+            }
+
+            return NoContent();
+        }
+
     }
 }

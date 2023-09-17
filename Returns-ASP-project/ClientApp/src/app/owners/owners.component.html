@@ -19,30 +19,18 @@
 
 <table class='table table-striped' aria-labelledby="tableLabel">
   <thead>
-    <tr class="table-primary">
-      <th class="col-10">Owner Name</th>
+    <tr>
+      <th class="col-5">Owner First Name</th>
+      <th class="col-5">Owner Last Name</th>
       <th class="col-2">Actions</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>John</td>
+    <tr *ngFor="let o of ownerList">
+      <td>{{o.firstName}}</td>
+      <td>{{o.lastName}}</td>
       <td>
-        <button class="btn-primary btn me-3" [routerLink]="['/owner-detail']"><i class="fa fa-edit"></i></button>
-        <button class="btn-danger btn"><i class="fa fa-trash"></i></button>
-      </td>
-    </tr>
-    <tr>
-      <td>Mary</td>
-      <td>
-        <button class="btn-primary btn me-3" [routerLink]="['/owner-detail']"><i class="fa fa-edit"></i></button>
-        <button class="btn-danger btn"><i class="fa fa-trash"></i></button>
-      </td>
-    </tr>
-    <tr>
-      <td>Paul</td>
-      <td>
-        <button class="btn-primary btn me-3" [routerLink]="['/owner-detail']"><i class="fa fa-edit"></i></button>
+        <button class="btn-primary btn me-3" [routerLink]="['/owner-detail', o.id]"><i class="fa fa-edit"></i></button>
         <button class="btn-danger btn"><i class="fa fa-trash"></i></button>
       </td>
     </tr>

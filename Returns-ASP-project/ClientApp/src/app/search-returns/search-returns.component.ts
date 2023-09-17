@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ReturnService } from './../api/services/return.service';
 import { ReturnDto, ReturnRm } from '../api/models';
 import { AppService } from '../app.service';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from '../auth/auth.service';
+import { UserService } from '../api/services';
 
 
 declare var window: any;
@@ -21,8 +24,14 @@ export class SearchReturnsComponent implements OnInit {
   returnToDelete: ReturnRm = {};
   showToast = false;
   messageFromDetail = '';
+  page = 1
+  pageSize = 10
+  collectionSize = 0
+  numberOfResults = 0
+  userId = 'Not Assigned'
+  user = 'Not Assigned'
 
-  constructor(private returnService: ReturnService, private appService: AppService) {
+  constructor(private returnService: ReturnService, private appService: AppService, private authService: AuthService, private userService: UserService) {
 
     //this.appService.getMessage.subscribe(m => this.messageFromDetail = m, this.handleError)
     this.appService.getToast.subscribe(t => {
@@ -41,6 +50,17 @@ export class SearchReturnsComponent implements OnInit {
     this.deleteModal = new window.bootstrap.Modal(
       document.getElementById("staticBackdrop")
     );
+
+    this.returnService.searchReturn({})
+      .subscribe(response => { this.returns = response; this.collectionSize = this.returns.length; this.numberOfResults = this.returns.length },
+        this.handleError)
+
+    this.userService.findUser({ email: this.authService.currentUser?.email! }).subscribe(u => {
+      this.userId = u.id!;
+
+      this.getUserId();
+    })
+    
   }
 
   toggleDocDate() {
@@ -61,9 +81,10 @@ export class SearchReturnsComponent implements OnInit {
     }
   }
 
-  search() {
+  search () {
+
     this.returnService.searchReturn({})
-      .subscribe(response => this.returns = response,
+      .subscribe(response => { this.returns = response; this.collectionSize = this.returns.length; this.numberOfResults = this.returns.length },
         this.handleError)
   }
 
@@ -73,7 +94,7 @@ export class SearchReturnsComponent implements OnInit {
     console.log(err);
   }
 
-  deleteReturn() { 
+  deleteReturn() {
 
     var returnRm = this.returnToDelete;
 
@@ -81,18 +102,22 @@ export class SearchReturnsComponent implements OnInit {
       id: returnRm.id,
       batchDate: returnRm.batchDate,
       comment: returnRm.comment,
-      customer: returnRm.customer,
+      customerId: returnRm.customerId,
       docDate: returnRm.docDate,
       docNo: returnRm.docNo,
-      fault: returnRm.fault,
-      owner: returnRm.owner,
-      product: returnRm.product,
+      faultId: returnRm.faultId,
+      ownerId: returnRm.ownerId,
+      productId: returnRm.productId,
       qtyOnDoc: returnRm.qtyOnDoc,
       qtyReturned: returnRm.qtyReturned,
-      resolved: returnRm.resolved
+      resolved: returnRm.resolved,
+      userId: returnRm.userId!
     }
 
-    this.returnService.deleteReturnReturn({ body: returnRm }).subscribe(r => this.returns = this.returns.filter(f => f != returnRm), this.handleError)
+    this.returnService.deleteReturnReturn({ body: returnDto }).subscribe(r => {
+      this.returns = this.returns.filter(f => f != returnRm);
+      this.collectionSize = this.returns.length; this.numberOfResults = this.returns.length
+    }, this.handleError)
 
     this.deleteModal.hide();
   }
@@ -102,5 +127,12 @@ export class SearchReturnsComponent implements OnInit {
     this.returnToDelete = returnRm;
 
   }
+
+  getUserId(): string {
+    console.log('The user id is: ' + this.userId)
+    return this.userId
+  }
+
 }
+
 

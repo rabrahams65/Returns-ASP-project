@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CustomerRm } from '../api/models';
+import { CustomerService } from '../api/services';
 
 @Component({
   selector: 'app-customers',
@@ -7,17 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomersComponent implements OnInit {
 
-  customerList: any = [
-    "Spar",
-    "Checkers",
-    "Shoprite",
-    "Woolworths",
-    "Pick n Pay"
-    ]
+  customerList: CustomerRm[] = []
 
-  constructor() { }
+  constructor(private customerService: CustomerService) { }
 
   ngOnInit(): void {
+    this.customerService.searchCustomer({}).subscribe(c => this.customerList = c,this.handleError)
+  }
+
+  private handleError(err: any) {
+    console.log("Response Error. Status: ", err.status)
+    console.log("Response Error. Status: ", err.statusText)
+    console.log(err);
   }
 
 }

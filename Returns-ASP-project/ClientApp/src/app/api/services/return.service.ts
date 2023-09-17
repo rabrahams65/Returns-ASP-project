@@ -10,7 +10,6 @@ import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 import { RequestBuilder } from '../request-builder';
 
-import { Return } from '../models/return';
 import { ReturnDto } from '../models/return-dto';
 import { ReturnRm } from '../models/return-rm';
 
@@ -31,11 +30,15 @@ export class ReturnService extends BaseService {
    */
   searchReturn$Plain$Response(
     params?: {
+      Page?: number;
+      Size?: number;
     },
     context?: HttpContext
   ): Observable<StrictHttpResponse<Array<ReturnRm>>> {
     const rb = new RequestBuilder(this.rootUrl, ReturnService.SearchReturnPath, 'get');
     if (params) {
+      rb.query('Page', params.Page, {});
+      rb.query('Size', params.Size, {});
     }
 
     return this.http.request(
@@ -56,6 +59,8 @@ export class ReturnService extends BaseService {
    */
   searchReturn$Plain(
     params?: {
+      Page?: number;
+      Size?: number;
     },
     context?: HttpContext
   ): Observable<Array<ReturnRm>> {
@@ -72,11 +77,15 @@ export class ReturnService extends BaseService {
    */
   searchReturn$Response(
     params?: {
+      Page?: number;
+      Size?: number;
     },
     context?: HttpContext
   ): Observable<StrictHttpResponse<Array<ReturnRm>>> {
     const rb = new RequestBuilder(this.rootUrl, ReturnService.SearchReturnPath, 'get');
     if (params) {
+      rb.query('Page', params.Page, {});
+      rb.query('Size', params.Size, {});
     }
 
     return this.http.request(
@@ -97,6 +106,8 @@ export class ReturnService extends BaseService {
    */
   searchReturn(
     params?: {
+      Page?: number;
+      Size?: number;
     },
     context?: HttpContext
   ): Observable<Array<ReturnRm>> {
@@ -346,7 +357,7 @@ export class ReturnService extends BaseService {
   updateReturnReturn$Response(
     params: {
       id: string;
-      body?: Return
+      body?: ReturnRm
     },
     context?: HttpContext
   ): Observable<StrictHttpResponse<void>> {
@@ -375,7 +386,7 @@ export class ReturnService extends BaseService {
   updateReturnReturn(
     params: {
       id: string;
-      body?: Return
+      body?: ReturnRm
     },
     context?: HttpContext
   ): Observable<void> {

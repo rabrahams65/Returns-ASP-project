@@ -11,6 +11,7 @@ import { StrictHttpResponse } from '../strict-http-response';
 import { RequestBuilder } from '../request-builder';
 
 import { NewUserDto } from '../models/new-user-dto';
+import { User } from '../models/user';
 import { UserRm } from '../models/user-rm';
 
 @Injectable({ providedIn: 'root' })
@@ -62,6 +63,53 @@ export class UserService extends BaseService {
     context?: HttpContext
   ): Observable<void> {
     return this.registerUser$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `deleteUser()` */
+  static readonly DeleteUserPath = '/User';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deleteUser()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteUser$Response(
+    params?: {
+      id?: string;
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<void>> {
+    const rb = new RequestBuilder(this.rootUrl, UserService.DeleteUserPath, 'delete');
+    if (params) {
+      rb.query('id', params.id, {});
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'text', accept: '*/*', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deleteUser$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteUser(
+    params?: {
+      id?: string;
+    },
+    context?: HttpContext
+  ): Observable<void> {
+    return this.deleteUser$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
@@ -154,6 +202,56 @@ export class UserService extends BaseService {
   ): Observable<UserRm> {
     return this.findUser$Response(params, context).pipe(
       map((r: StrictHttpResponse<UserRm>): UserRm => r.body)
+    );
+  }
+
+  /** Path part for operation `updateUser()` */
+  static readonly UpdateUserPath = '/User/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `updateUser()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  updateUser$Response(
+    params: {
+      id: string;
+      body?: User
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<void>> {
+    const rb = new RequestBuilder(this.rootUrl, UserService.UpdateUserPath, 'put');
+    if (params) {
+      rb.path('id', params.id, {});
+      rb.body(params.body, 'application/*+json');
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'text', accept: '*/*', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `updateUser$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  updateUser(
+    params: {
+      id: string;
+      body?: User
+    },
+    context?: HttpContext
+  ): Observable<void> {
+    return this.updateUser$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 

@@ -6,6 +6,8 @@ using System.Linq;
 using Returns_ASP_project.Data;
 using Returns_ASP_project.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
+using Returns_ASP_project.Common;
+using Humanizer;
 
 namespace Returns_ASP_project.Controllers
 {
@@ -24,17 +26,19 @@ namespace Returns_ASP_project.Controllers
             _entities = entities;
         }
 
-        [ProducesResponseType(typeof(IEnumerable<ReturnRm>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IQueryable<ReturnRm>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
-        public IEnumerable<ReturnRm> Search() 
+        public IQueryable<ReturnRm> Search([FromQuery] QueryParameters qp) 
         {
-            var returnsList = _entities.Returns.Select(r => new ReturnRm(
-                r.Id, r.DocDate, r.Customer, r.Product
-                , r.QtyOnDoc, r.BatchDate, r.Owner, r.Fault
-                , r.DocNo, r.QtyReturned, r.resolved, r.Comment
+            IQueryable<ReturnRm> returnsList = _entities.Returns.Select(r => new ReturnRm(
+                r.Id, r.DocDate, r.CustomerId, r.ProductId
+                , r.QtyOnDoc, r.BatchDate, r.OwnerId, r.FaultId
+                , r.DocNo, r.QtyReturned, r.Resolved, r.Comment, r.UserId, r.DateUpdated
                 ));
+
+            returnsList = qp.Size > 0 ? returnsList.Skip(qp.Size * (qp.Page - 1)).Take(qp.Size) : returnsList;
 
             return returnsList;
 
@@ -52,9 +56,9 @@ namespace Returns_ASP_project.Controllers
             if (singleReturn == null)
                 return NotFound();
 
-            var readModel = new ReturnRm(singleReturn.Id, singleReturn.DocDate, singleReturn.Customer, singleReturn.Product
-                                        ,singleReturn.QtyOnDoc, singleReturn.BatchDate, singleReturn.Owner, singleReturn.Fault
-                                        ,singleReturn.DocNo, singleReturn.QtyReturned, singleReturn.resolved, singleReturn.Comment);
+            var readModel = new ReturnRm(singleReturn.Id, singleReturn.DocDate, singleReturn.CustomerId, singleReturn.ProductId
+                                        , singleReturn.QtyOnDoc, singleReturn.BatchDate, singleReturn.OwnerId, singleReturn.FaultId
+                                        , singleReturn.DocNo, singleReturn.QtyReturned, singleReturn.Resolved, singleReturn.Comment, singleReturn.UserId, singleReturn.DateUpdated);
 
             return Ok(readModel);
         }
@@ -64,13 +68,16 @@ namespace Returns_ASP_project.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ReturnRm), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ReturnRm), StatusCodes.Status201Created)]
         [HttpPost]
         public IActionResult CreateReturn(ReturnDto dto)
         {
 
-            var newReturn = new Return(Guid.NewGuid(), dto.DocDate, dto.Customer, dto.Product, dto.QtyOnDoc, dto.BatchDate, dto.Owner
-                                       , dto.Fault, dto.DocNo, dto.QtyReturned, dto.resolved, dto.Comment);
- 
+            var newReturn = new Return(Guid.NewGuid(), dto.DocDate, dto.CustomerId, dto.ProductId, dto.QtyOnDoc, dto.BatchDate, dto.OwnerId
+                                       , dto.FaultId, dto.DocNo, dto.QtyReturned, dto.resolved, dto.Comment, dto.UserId, DateTime.Now);
+
+
+            newReturn.DateAdded = newReturn.DateUpdated;
 
             _entities.Returns.Add(newReturn);
 
@@ -80,11 +87,11 @@ namespace Returns_ASP_project.Controllers
             }
             catch (DbUpdateConcurrencyException e)
             {
-                return Conflict(new { message = "An error occured while trying to create a new return. Please try again." });
+                return Conflict(new { message = "An error occured while trying to create a new return. Please try again. " + e.Message });
             }
 
             return CreatedAtAction(nameof(Find), new { id = newReturn.Id });
-  
+
         }
 
         [ProducesResponseType(400)]
@@ -115,15 +122,30 @@ namespace Returns_ASP_project.Controllers
         [ProducesResponseType(500)]
         [ProducesResponseType(204)]
         [HttpPut("{id}")]
-        public ActionResult UpdateReturn(Guid id, Return singleReturn)
+        public ActionResult UpdateReturn(Guid id, ReturnRm rm)
         {
-            if(id != singleReturn.Id)
+            var returnInDb = _entities.Returns.Single( r => r.Id == id);
+            var DateAdded = returnInDb.DateAdded;
+
+            var singleReturn = new Return(rm.Id, rm.DocDate, rm.CustomerId, rm.ProductId, rm.QtyOnDoc, rm.BatchDate, rm.OwnerId
+            , rm.FaultId, rm.DocNo, rm.QtyReturned, rm.resolved, rm.Comment, rm.UserId, DateTime.Now);
+
+            
+
+            if (id != singleReturn.Id)
             {
                 return BadRequest();
             }
 
-            _entities.Entry(singleReturn).State= EntityState.Modified;
+            if(singleReturn.DateAdded == null)
+            {
+                
+                singleReturn.DateAdded = DateAdded;
+                _entities.Entry(returnInDb).State = EntityState.Detached;
+            }
 
+             _entities.Entry(singleReturn).State= EntityState.Modified;
+            
             try
             {
                 _entities.SaveChanges();
@@ -132,7 +154,6 @@ namespace Returns_ASP_project.Controllers
             {
                 return Conflict(new { message = "An error occured while trying to edit the return. Please try again. " + e.Message });
             }
-
             return NoContent();
         }
             

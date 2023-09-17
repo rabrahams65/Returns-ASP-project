@@ -33,69 +33,69 @@ export class AddNewComponent implements OnInit {
     comment: ['']
   })
 
-  showToast = false;
-  message = 'Something went wrong'
+//  showToast = false;
+//  message = 'Something went wrong'
 
 
-  toggleBatch() {
-    this.batchDateToggle = !this.batchDateToggle;
-  }
+//  toggleBatch() {
+//    this.batchDateToggle = !this.batchDateToggle;
+//  }
 
-  save() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched()
-      return
-    }
+//  save() {
+//    if (this.form.invalid) {
+//      this.form.markAllAsTouched()
+//      return
+//    }
 
-    this.message = 'Return Saved'
-    this.showToast = true
+//    this.message = 'Return Saved'
+//    this.showToast = true
 
-    const createdReturn: ReturnDto = {
-      docDate: this.form.get('docDate')?.value!,
-      customer: this.form.get('customer')?.value!,
-      product: this.form.get('product')?.value!,
-      qtyOnDoc: this.form.get('qtyOnDoc')?.value!,
-      batchDate: this.form.get('batchDate')?.value!,
-      owner: this.form.get('owner')?.value!,
-      fault: this.form.get('fault')?.value!,
-      docNo: this.form.get('docNo')?.value!,
-      qtyReturned: this.form.get('qtyReturned')?.value!,
-      resolved: JSON.parse(this.form.controls.resolved.value!),
-      comment: this.form.get('comment')?.value!
-    }
+//    const createdReturn: ReturnDto = {
+//      docDate: this.form.get('docDate')?.value!,
+//      customer: this.form.get('customer')?.value!,
+//      product: this.form.get('product')?.value!,
+//      qtyOnDoc: this.form.get('qtyOnDoc')?.value!,
+//      batchDate: this.form.get('batchDate')?.value!,
+//      owner: this.form.get('owner')?.value!,
+//      fault: this.form.get('fault')?.value!,
+//      docNo: this.form.get('docNo')?.value!,
+//      qtyReturned: this.form.get('qtyReturned')?.value!,
+//      resolved: JSON.parse(this.form.controls.resolved.value!),
+//      comment: this.form.get('comment')?.value!
+//    }
 
 
 
-    this.returnService.createReturnReturn({ body: createdReturn }).subscribe(_ => { this.appService.setMessage(this.message); this.appService.showToast(this.showToast) }, this.handleError)
-    this.router.navigate(['/search-returns'])
-  }
+//    this.returnService.createReturnReturn({ body: createdReturn }).subscribe(_ => { this.appService.setMessage(this.message); this.appService.showToast(this.showToast) }, this.handleError)
+//    this.router.navigate(['/search-returns'])
+//  }
 
-  private handleError = (err: any) => {
+//  private handleError = (err: any) => {
 
-    if (err.status == 404) {
-      this.router.navigate(['/search-returns'])
-    }
+//    if (err.status == 404) {
+//      this.router.navigate(['/search-returns'])
+//    }
 
-    console.log("Response Error. Status: ", err.status)
-    console.log("Response Error. Status: ", err.statusText)
-    console.log(err);
-  }
+//    console.log("Response Error. Status: ", err.status)
+//    console.log("Response Error. Status: ", err.statusText)
+//    console.log(err);
+//  }
 
-  get customer() {
-    return this.form.controls.customer
-  }
+//  get customer() {
+//    return this.form.controls.customer
+//  }
 
-  get product() {
-    return this.form.controls.product
-  }
+//  get product() {
+//    return this.form.controls.product
+//  }
 
-  get docDate() {
-    return this.form.controls.docDate
-  }
+//  get docDate() {
+//    return this.form.controls.docDate
+//  }
 
-  get docNo() {
-    return this.form.controls.docNo
-  }
+//  get docNo() {
+//    return this.form.controls.docNo
+//  }
 
 }
 

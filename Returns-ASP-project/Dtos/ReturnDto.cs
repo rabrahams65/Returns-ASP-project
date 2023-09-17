@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Returns_ASP_project.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace Returns_ASP_project.Dtos
 {
@@ -6,16 +7,18 @@ namespace Returns_ASP_project.Dtos
         Guid? Id,
         DateTime? DocDate,
         [Required]
-        string? Customer,
+        Guid? CustomerId,
         [Required]
-        string? Product,
+        Guid? ProductId,
         int? QtyOnDoc,
         DateTime? BatchDate,
-        string? Owner,
-        string? Fault,
+        Guid? OwnerId,
+        Guid? FaultId,
         string? DocNo,
         int? QtyReturned,
         bool? resolved,
-        string? Comment);
+        string? Comment,
+        Guid UserId,
+        DateTime DateUpdated);
 
 }

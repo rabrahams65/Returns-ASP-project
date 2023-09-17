@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { OwnerRm } from '../api/models';
+import { OwnerService } from '../api/services';
 
 @Component({
   selector: 'app-owner-detail',
@@ -7,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OwnerDetailComponent implements OnInit {
 
-  constructor() { }
+  constructor(private ownerService: OwnerService, private activatedRoute: ActivatedRoute) { }
+
+  ownerId = ''
+  owner: OwnerRm = {}
 
   ngOnInit(): void {
+    this.activatedRoute.paramMap.subscribe(f => this.findOwner(f.get("ownerId")))
+  }
+
+  findOwner = (faultId: string | null) => {
+    this.ownerService.findOwner({id : faultId!}).subscribe(o => this.owner = o)
   }
 
 }

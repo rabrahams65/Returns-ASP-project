@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { OwnerRm } from '../api/models';
+import { OwnerService } from '../api/services';
 
 @Component({
   selector: 'app-owners',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OwnersComponent implements OnInit {
 
-  constructor() { }
+  constructor(private ownerService: OwnerService  ) { }
+
+  ownerList: OwnerRm[] = []
 
   ngOnInit(): void {
+    this.ownerService.searchOwner().subscribe( o => this.ownerList = o, this.handleError)
+  }
+
+  private handleError(err: any) {
+    console.log("Response Error. Status: ", err.status)
+    console.log("Response Error. Status: ", err.statusText)
+    console.log(err);
   }
 
 }

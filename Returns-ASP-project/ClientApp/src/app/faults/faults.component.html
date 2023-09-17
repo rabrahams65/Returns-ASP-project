@@ -19,30 +19,16 @@
 
 <table class='table table-striped' aria-labelledby="tableLabel">
   <thead>
-    <tr class="table-primary">
+    <tr>
       <th class="col-10">Fault Name</th>
       <th class="col-2">Actions</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Mouldy</td>
+    <tr *ngFor="let f of faultList">
+      <td>{{f.name}}</td>
       <td>
-        <button class="btn-primary btn me-3" [routerLink]="['/fault-detail']"><i class="fa fa-edit"></i></button>
-        <button class="btn-danger btn"><i class="fa fa-trash"></i></button>
-      </td>
-    </tr>
-    <tr>
-      <td>Sour</td>
-      <td>
-        <button class="btn-primary btn me-3" [routerLink]="['/fault-detail']"><i class="fa fa-edit"></i></button>
-        <button class="btn-danger btn"><i class="fa fa-trash"></i></button>
-      </td>
-    </tr>
-    <tr>
-      <td>Expired</td>
-      <td>
-        <button class="btn-primary btn me-3" [routerLink]="['/fault-detail']"><i class="fa fa-edit"></i></button>
+        <button class="btn-primary btn me-3" [routerLink]="['/fault-detail', f.id]"><i class="fa fa-edit"></i></button>
         <button class="btn-danger btn"><i class="fa fa-trash"></i></button>
       </td>
     </tr>

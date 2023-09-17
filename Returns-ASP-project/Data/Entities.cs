@@ -8,6 +8,10 @@ namespace Returns_ASP_project.Data
     { 
         public DbSet<User> Users => Set<User>();
         public DbSet<Return> Returns => Set<Return>();
+        public DbSet<Customer> Customers => Set<Customer>();
+        public DbSet<Product> Products => Set<Product>();
+        public DbSet<Owner> Owners => Set<Owner>();
+        public DbSet<Fault> Faults => Set<Fault>();
 
         public Entities(DbContextOptions<Entities> options) : base(options)
         {

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FaultRm } from '../api/models';
+import { FaultService } from '../api/services';
 
 @Component({
   selector: 'app-faults',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FaultsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private faultService: FaultService) { }
+  faultList: FaultRm[] = []
 
   ngOnInit(): void {
+    this.faultService.searchFault().subscribe(f => this.faultList = f, this.handleError)
+  }
+
+  private handleError(err: any) {
+    console.log("Response Error. Status: ", err.status)
+    console.log("Response Error. Status: ", err.statusText)
+    console.log(err);
   }
 
 }

@@ -4,6 +4,11 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { CustomerService } from './services/customer.service';
+import { FaultService } from './services/fault.service';
+import { OwnerService } from './services/owner.service';
+import { ProductService } from './services/product.service';
+import { ReportService } from './services/report.service';
 import { ReturnService } from './services/return.service';
 import { UserService } from './services/user.service';
 
@@ -15,6 +20,11 @@ import { UserService } from './services/user.service';
   exports: [],
   declarations: [],
   providers: [
+    CustomerService,
+    FaultService,
+    OwnerService,
+    ProductService,
+    ReportService,
     ReturnService,
     UserService,
     ApiConfiguration

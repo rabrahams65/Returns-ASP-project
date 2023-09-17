@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
+import { UserService } from '../api/services';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
-  currentUser?: User;
+  currentUser?: User
 
-  loginUser(user: User) {
+  loginUser (user: User) {
     this.currentUser = user
-    console.log("The logged in user's email address is: " + this.currentUser.email)
   }
-
-
 }
 
 

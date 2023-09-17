@@ -1,27 +1,29 @@
 <h2>Edit</h2>
 <hr />
 
-
-
-
 <form [formGroup]="form" (ngSubmit)="update()">
   <div class="center shadow-custom mb-3">
     <div class="container">
+
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Customer</label>
-          <div *ngIf="customer.invalid && (customer.touched || customer.dirty)" class="invalid-feedback d-block">
-            <div *ngIf="customer.errors?.['required']">Customer is required</div>
+          <pre>{{custIdFromTemplate}}</pre>
+          <div *ngIf="getCustomer.invalid && (getCustomer.touched || getCustomer.dirty)" class="invalid-feedback d-block">
+            <div *ngIf="getCustomer.errors?.['required']">Customer is required</div>
           </div>
           <div class="input-group">
-            <input formControlName="customer" class="form-control" list="customerDataList" value="{{return.customer}}">
-            <datalist id="customerDataList">
-              <option value="Spar" id="1">
-              <option value="Checkers">
-              <option value="Shoprite">
-              <option value="Engen">
-              <option value="Woolworths">
-            </datalist>
+            <input #customerValue
+                   type="text"
+                   class="form-control"
+                   [ngbTypeahead]="searchCust"
+                   [inputFormatter]="custFormatter"
+                   [resultFormatter]="custFormatter"
+                   [editable]="false"
+                   formcontrolName="customer"
+                   value="{{customer.customerName}}"
+                   (blur)="getModel(customerValue.value, 'customerType')"
+                   />
             <button class="btn btn-outline-secondary" [routerLink]="['/customer-detail']" type="button">+</button>
           </div>
         </div>
@@ -30,20 +32,27 @@
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Product</label>
-          <div *ngIf="product.invalid && (product.touched || product.dirty)" class="invalid-feedback d-block">
-            <div *ngIf="product.errors?.['required']">Product is required</div>
+          <pre>{{prodIdFromTemplate}}</pre>
+          <div *ngIf="getProduct.invalid && (getProduct.touched || getProduct.dirty)" class="invalid-feedback d-block">
+            <div *ngIf="getProduct.errors?.['required']">Product is required</div>
           </div>
           <div class="input-group">
-            <input formControlName="product" class="form-control" list="productDatalist" value="{{return.product}}">
-            <datalist id="productDatalist">
-              <option value="Milk">
-              <option value="Bread">
-              <option value="Eggs">
-            </datalist>
+            <input #prodValue
+                   type="text"
+                   class="form-control"
+                   [ngbTypeahead]="searchProd"
+                   [inputFormatter]="prodFormatter"
+                   [resultFormatter]="prodFormatter"
+                   [editable]="false"
+                   formcontrolName="product"
+                   value="{{product.productName}}"
+                   (blur)="getModel(prodValue.value, 'productType')"
+                   />
             <button class="btn btn-outline-secondary" [routerLink]="['/product-detail']" type="button">+</button>
           </div>
         </div>
       </div>
+
 
       <div class="row">
         <div class="mb-3 col-6">
@@ -74,13 +83,22 @@
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Owner</label>
+          <pre>{{ownerIdFromTemplate}}</pre>
+          <div *ngIf="getOwner.invalid && (getOwner.touched || getOwner.dirty)" class="invalid-feedback d-block">
+            <div *ngIf="getOwner.errors?.['required']">Owner is required</div>
+          </div>
           <div class="input-group">
-            <input formControlName="owner" class="form-control" list="ownerDatalist" value="{{return.owner}}">
-            <datalist id="ownerDatalist">
-              <option value="John">
-              <option value="Mary">
-              <option value="Paul">
-            </datalist>
+            <input #ownerValue
+                   type="text"
+                   class="form-control"
+                   [ngbTypeahead]="searchOwner"
+                   [inputFormatter]="ownerFormatter"
+                   [resultFormatter]="ownerFormatter"
+                   [editable]="false"
+                   formcontrolName="owner"
+                   value="{{owner.firstName}}"
+                   (blur)="getModel(ownerValue.value, 'ownerType')"
+                   />
             <button class="btn btn-outline-secondary" [routerLink]="['/owner-detail']" type="button">+</button>
           </div>
         </div>
@@ -89,31 +107,41 @@
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Fault</label>
+          <pre>{{faultIdFromTemplate}}</pre>
+          <div *ngIf="getFault.invalid && (getFault.touched || getFault.dirty)" class="invalid-feedback d-block">
+            <div *ngIf="getFault.errors?.['required']">Fault is required</div>
+          </div>
           <div class="input-group">
-            <input formControlName="fault" class="form-control" list="faultDatalist" value="{{return.fault}}">
-            <datalist id="faultDatalist">
-              <option value="Mouldy">
-              <option value="Sour">
-              <option value="Expired">
-            </datalist>
+            <input #faultValue
+                   type="text"
+                   class="form-control"
+                   [ngbTypeahead]="searchFault"
+                   [inputFormatter]="faultFormatter"
+                   [resultFormatter]="faultFormatter"
+                   [editable]="false"
+                   formcontrolName="fault"
+                   value="{{fault.name}}"
+                   (blur)="getModel(faultValue.value, 'faultType')"
+                   />
             <button class="btn btn-outline-secondary" [routerLink]="['/fault-detail']" type="button">+</button>
           </div>
         </div>
       </div>
 
+
       <div class="row">
         <div class="mb-3 col-6">
           <label class="form-label">External Document No.</label>
-          <div *ngIf="docNo.invalid && (docNo.touched || docNo.dirty)" class="invalid-feedback d-block">
-            <div *ngIf="docNo.errors?.['required']">Document Number is required</div>
+          <div *ngIf="getDocNo.invalid && (getDocNo.touched || getDocNo.dirty)" class="invalid-feedback d-block">
+            <div *ngIf="getDocNo.errors?.['required']">Document Number is required</div>
           </div>
           <input formControlName="docNo" type="text" class="form-control" value="{{return.docNo}}">
         </div>
 
         <div class="mb-3 col-6">
           <label class="form-label">Document Date</label>
-          <div *ngIf="docDate.invalid && (docDate.touched || docDate.dirty)" class="invalid-feedback d-block">
-            <div *ngIf="docDate.errors?.['required']">Document Date is required</div>
+          <div *ngIf="getDocDate.invalid && (getDocDate.touched || getDocDate.dirty)" class="invalid-feedback d-block">
+            <div *ngIf="getDocDate.errors?.['required']">Document Date is required</div>
           </div>
           <input formControlName="docDate" type="date" class="form-control" [value]="return.docDate | date:'yyyy-MM-dd'">
         </div>
