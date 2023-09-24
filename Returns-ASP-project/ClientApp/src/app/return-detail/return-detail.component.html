@@ -8,7 +8,7 @@
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Customer</label>
-          <pre>{{custIdFromTemplate}}</pre>
+          <div *ngIf="custIdFromTemplate == 'Not Found'" class="invalid-feedback d-block">{{custIdFromTemplate}}</div>
           <div *ngIf="getCustomer.invalid && (getCustomer.touched || getCustomer.dirty)" class="invalid-feedback d-block">
             <div *ngIf="getCustomer.errors?.['required']">Customer is required</div>
           </div>
@@ -19,8 +19,8 @@
                    [ngbTypeahead]="searchCust"
                    [inputFormatter]="custFormatter"
                    [resultFormatter]="custFormatter"
-                   [editable]="false"
-                   formcontrolName="customer"
+                   [editable]="true"
+                   formcontrolName="getCustomer"
                    value="{{customer.customerName}}"
                    (blur)="getModel(customerValue.value, 'customerType')"
                    />
@@ -32,7 +32,8 @@
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Product</label>
-          <pre>{{prodIdFromTemplate}}</pre>
+          <div *ngIf="prodIdFromTemplate == 'Not Found'" class="invalid-feedback d-block">{{prodIdFromTemplate}}</div>
+          <p>{{prodIdFromTemplate}}</p>
           <div *ngIf="getProduct.invalid && (getProduct.touched || getProduct.dirty)" class="invalid-feedback d-block">
             <div *ngIf="getProduct.errors?.['required']">Product is required</div>
           </div>
@@ -46,8 +47,7 @@
                    [editable]="false"
                    formcontrolName="product"
                    value="{{product.productName}}"
-                   (blur)="getModel(prodValue.value, 'productType')"
-                   />
+                   (blur)="getModel(prodValue.value, 'productType')" />
             <button class="btn btn-outline-secondary" [routerLink]="['/product-detail']" type="button">+</button>
           </div>
         </div>
@@ -83,7 +83,7 @@
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Owner</label>
-          <pre>{{ownerIdFromTemplate}}</pre>
+          <div *ngIf="ownerIdFromTemplate == 'Not Found'" class="invalid-feedback d-block">{{ownerIdFromTemplate}}</div>
           <div *ngIf="getOwner.invalid && (getOwner.touched || getOwner.dirty)" class="invalid-feedback d-block">
             <div *ngIf="getOwner.errors?.['required']">Owner is required</div>
           </div>
@@ -97,8 +97,7 @@
                    [editable]="false"
                    formcontrolName="owner"
                    value="{{owner.firstName}}"
-                   (blur)="getModel(ownerValue.value, 'ownerType')"
-                   />
+                   (blur)="getModel(ownerValue.value, 'ownerType')" />
             <button class="btn btn-outline-secondary" [routerLink]="['/owner-detail']" type="button">+</button>
           </div>
         </div>
@@ -107,7 +106,7 @@
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Fault</label>
-          <pre>{{faultIdFromTemplate}}</pre>
+          <div *ngIf="faultIdFromTemplate == 'Not Found'" class="invalid-feedback d-block">{{faultIdFromTemplate}}</div>
           <div *ngIf="getFault.invalid && (getFault.touched || getFault.dirty)" class="invalid-feedback d-block">
             <div *ngIf="getFault.errors?.['required']">Fault is required</div>
           </div>
@@ -121,8 +120,7 @@
                    [editable]="false"
                    formcontrolName="fault"
                    value="{{fault.name}}"
-                   (blur)="getModel(faultValue.value, 'faultType')"
-                   />
+                   (blur)="getModel(faultValue.value, 'faultType')" />
             <button class="btn btn-outline-secondary" [routerLink]="['/fault-detail']" type="button">+</button>
           </div>
         </div>
@@ -162,6 +160,10 @@
       <div class="mb-3 col-12">
         <label class="form-label">Comment</label>
         <textarea formControlName="comment" class="form-control" rows="3" maxlength="255">{{return.comment}}</textarea>
+      </div>
+
+      <div class="invalid-feedback d-block mb-3" *ngIf="formInvalid.length > 0">
+        {{formInvalid}}
       </div>
 
       <div class="row">

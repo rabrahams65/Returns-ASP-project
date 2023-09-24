@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ReturnService } from './../api/services/return.service';
-import { ReturnDto, ReturnRm } from '../api/models';
+import { CustomerRm, FaultRm, OwnerRm, ProductRm, ReturnDto, ReturnRm } from '../api/models';
 import { AppService } from '../app.service';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../auth/auth.service';
-import { UserService } from '../api/services';
+import { CustomerService, FaultService, OwnerService, ProductService, UserService } from '../api/services';
 
 
 declare var window: any;
@@ -16,22 +16,34 @@ declare var window: any;
 })
 export class SearchReturnsComponent implements OnInit {
 
+  notAssigned = 'Not Assigned'
   returns: ReturnRm[] = []
   docDateInvisible: boolean = true;
   noDateInvisible: boolean = true;
   noDateChecked = false;
   deleteModal: any;
   returnToDelete: ReturnRm = {};
+
+  customerList: CustomerRm[] = []
+  productList: ProductRm[] = []
+  faultList: FaultRm[] = []
+  ownerList: OwnerRm[] = []
   showToast = false;
+
   messageFromDetail = '';
   page = 1
   pageSize = 10
   collectionSize = 0
   numberOfResults = 0
-  userId = 'Not Assigned'
-  user = 'Not Assigned'
+  userId = this.notAssigned
+  user = this.notAssigned
+  customerName = this.notAssigned
+  productName = this.notAssigned
+  ownerName = this.notAssigned
+  faultName = this.notAssigned
 
-  constructor(private returnService: ReturnService, private appService: AppService, private authService: AuthService, private userService: UserService) {
+  constructor(private returnService: ReturnService, private appService: AppService, private authService: AuthService, private userService: UserService,
+    private customerService: CustomerService, private productService: ProductService, private ownerService: OwnerService, private faultService: FaultService) {
 
     //this.appService.getMessage.subscribe(m => this.messageFromDetail = m, this.handleError)
     this.appService.getToast.subscribe(t => {
@@ -51,15 +63,22 @@ export class SearchReturnsComponent implements OnInit {
       document.getElementById("staticBackdrop")
     );
 
-    this.returnService.searchReturn({})
-      .subscribe(response => { this.returns = response; this.collectionSize = this.returns.length; this.numberOfResults = this.returns.length },
-        this.handleError)
+    this.customerService.searchCustomer().subscribe(c => this.setAllCustomers(c))
+    this.productService.searchProduct().subscribe(p => this.setAllProducts(p))
+    this.ownerService.searchOwner().subscribe(o => this.setAllOwners(o))
+    this.faultService.searchFault().subscribe(f => this.setAllFaults(f))
+    //this.userService.f
+
+    
 
     this.userService.findUser({ email: this.authService.currentUser?.email! }).subscribe(u => {
       this.userId = u.id!;
 
       this.getUserId();
     })
+
+    this.search()
+    //this.returns.filter( r => r = r )
     
   }
 
@@ -81,12 +100,41 @@ export class SearchReturnsComponent implements OnInit {
     }
   }
 
-  search () {
+  search()  {
+    
 
     this.returnService.searchReturn({})
-      .subscribe(response => { this.returns = response; this.collectionSize = this.returns.length; this.numberOfResults = this.returns.length },
+      .subscribe(response => {
+        this.collectionSize = response.length
+        this.numberOfResults = response.length
+        response.forEach(items => {
+
+          do {
+            this.customerList.filter(c => items.customerId == c.id).map(c => this.customerName = c.customerName!)
+            this.productList.filter(p => items.productId == p.id).map(p => this.productName = p.productName!)
+            this.ownerList.filter(o => items.ownerId == o.id).map(o => this.ownerName = o.firstName!)
+            this.faultList.filter(f => items.faultId == f.id).map(f => this.faultName = f.name!)
+          }
+          while (this.customerName == this.notAssigned || this.productName == this.notAssigned || this.faultName == this.notAssigned || this.ownerName == this.notAssigned)
+
+          this.returns.push({
+            id: items.id, customerId: this.customerName, productId: this.productName, ownerId: this.ownerName, faultId: this.faultName,
+            batchDate: items.batchDate, comment: items.comment, dateUpdated: items.dateUpdated, docDate: items.docDate,
+            docNo: items.docNo, qtyOnDoc: items.qtyOnDoc, qtyReturned: items.qtyReturned, resolved: items.resolved, userId: items.userId
+          })
+
+          console.log(response)
+          console.log(this.returns)
+        })
+
+       
+      },
         this.handleError)
+    
   }
+
+  setCustomerName = (name: string) => {
+    this.customerName = name  }
 
   private handleError(err: any) {
     console.log("Response Error. Status: ", err.status)
@@ -131,6 +179,25 @@ export class SearchReturnsComponent implements OnInit {
   getUserId(): string {
     console.log('The user id is: ' + this.userId)
     return this.userId
+  }
+
+  //Sets values upon initilization
+
+  private setAllCustomers(customers: CustomerRm[]) {
+    this.customerList = customers
+    console.log(this.customerList)
+  }
+
+  private setAllProducts(products: ProductRm[]) {
+    this.productList = products
+  }
+
+  private setAllFaults(faults: FaultRm[]) {
+    this.faultList = faults
+  }
+
+  private setAllOwners(owners: OwnerRm[]) {
+    this.ownerList = owners
   }
 
 }

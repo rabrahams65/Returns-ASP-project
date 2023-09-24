@@ -1,83 +1,87 @@
-<!--<h2>Add New Return</h2>
+<h2>Edit</h2>
 <hr />
 
 <form [formGroup]="form" (ngSubmit)="save()">
   <div class="center shadow-custom mb-3">
     <div class="container">
-        <div class="row">
-          <div class="mb-3 col-12">
-            <label class="form-label">Customer</label>
-            <div *ngIf="customer.invalid && (customer.touched || customer.dirty)" class="invalid-feedback d-block">
-              <div *ngIf="customer.errors?.['required']">Customer is required</div>
-            </div>
-            <div class="input-group">
-              <input formControlName="customer" class="form-control" list="customerDataList">
-              <datalist id="customerDataList">
-                <option value="Spar">
-                <option value="Checkers">
-                <option value="Shoprite">
-                <option value="Engen">
-                <option value="Woolworths">
-              </datalist>
-              <button class="btn btn-outline-secondary" [routerLink]="['/customer-detail']" type="button">+</button>
-            </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Customer</label>
+          <div *ngIf="custIdFromTemplate == 'Not Found'" class="invalid-feedback d-block mb-3">{{custIdFromTemplate}}</div>
+          <div class="input-group">
+            <input #customerValue
+                   type="text"
+                   class="form-control"
+                   [ngbTypeahead]="searchCust"
+                   [inputFormatter]="custFormatter"
+                   [resultFormatter]="custFormatter"
+                   [editable]="true"
+                   formcontrolName="getCustomer"
+                   (blur)="getModel(customerValue.value, 'customerType')" />
+            <button class="btn btn-outline-secondary" [routerLink]="['/customer-detail']" type="button">+</button>
           </div>
         </div>
+      </div>
 
-        <div class="row">
-          <div class="mb-3 col-12">
-            <label class="form-label">Product</label>
-            <div *ngIf="product.invalid && (product.touched || product.dirty)" class="invalid-feedback d-block">
-              <div *ngIf="product.errors?.['required']">Product is required</div>
-            </div>
-            <div class="input-group">
-              <input formControlName="product" class="form-control" list="productDatalist">
-              <datalist id="productDatalist">
-                <option value="Milk">
-                <option value="Bread">
-                <option value="Eggs">
-              </datalist>
-              <button class="btn btn-outline-secondary" [routerLink]="['/product-detail']" type="button">+</button>
-            </div>
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Product</label>
+          <div *ngIf="prodIdFromTemplate == 'Not Found'" class="invalid-feedback d-block mb-3">{{prodIdFromTemplate}}</div>
+          <div class="input-group">
+            <input #prodValue
+                   type="text"
+                   class="form-control"
+                   [ngbTypeahead]="searchProd"
+                   [inputFormatter]="prodFormatter"
+                   [resultFormatter]="prodFormatter"
+                   [editable]="false"
+                   formcontrolName="product"
+                   (blur)="getModel(prodValue.value, 'productType')" />
+            <button class="btn btn-outline-secondary" [routerLink]="['/product-detail']" type="button">+</button>
           </div>
         </div>
+      </div>
 
-        <div class="row">
-          <div class="mb-3 col-6">
-            <label class="form-label">Qty on Document</label>
-            <input formControlName="qtyOnDoc" type="number" min="0" class="form-control">
-          </div>
 
-          <div class="mb-3 col-6">
-            <label class="form-label">Qty Returned</label>
-            <input formControlName="qtyReturned" type="number" min="0" class="form-control">
-          </div>
-
+      <div class="row">
+        <div class="mb-3 col-6">
+          <label class="form-label">Qty on Document</label>
+          <input formControlName="qtyOnDoc" type="number" min="0" class="form-control">
         </div>
 
-        <div class="row">
-          <div class="col-12">
-            <div class="input-group mb-3">
-              <div class="input-group-text">
-                <span class="me-3">No Batch Date</span>
-                <input class="form-check-input mt-0" type="checkbox"  #batchChecked (change)="toggleBatch(); batchDateBox.value = ''">
-              </div>
-              <input formControlName="batchDate" type="date" #batchDateBox [readonly]="batchChecked.checked == true ? true : false" class="form-control">
-            </div>
-          </div>
+        <div class="mb-3 col-6">
+          <label class="form-label">Qty Returned</label>
+          <input formControlName="qtyReturned" type="number" min="0" class="form-control">
+        </div>
 
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="input-group mb-3">
+            <div class="input-group-text">
+              <span class="me-3">No Batch Date</span>
+              <input class="form-check-input mt-0" type="checkbox" #batchChecked (change)="toggleBatch(); batchDateBox.value = ''">
+            </div>
+            <input formControlName="batchDate" type="date" #batchDateBox [readonly]="batchChecked.checked == true ? true : false" class="form-control">
+          </div>
         </div>
 
         <div class="row">
           <div class="mb-3 col-12">
             <label class="form-label">Owner</label>
+            <div *ngIf="ownerIdFromTemplate == 'Not Found'" class="invalid-feedback d-block mb-3">{{ownerIdFromTemplate}}</div>
             <div class="input-group">
-              <input formControlName="owner" class="form-control" list="ownerDatalist">
-              <datalist id="ownerDatalist">
-                <option value="John">
-                <option value="Mary">
-                <option value="Paul">
-              </datalist>
+              <input #ownerValue
+                     type="text"
+                     class="form-control"
+                     [ngbTypeahead]="searchOwner"
+                     [inputFormatter]="ownerFormatter"
+                     [resultFormatter]="ownerFormatter"
+                     [editable]="false"
+                     formcontrolName="owner"
+                     (blur)="getModel(ownerValue.value, 'ownerType')" />
               <button class="btn btn-outline-secondary" [routerLink]="['/owner-detail']" type="button">+</button>
             </div>
           </div>
@@ -86,31 +90,36 @@
         <div class="row">
           <div class="mb-3 col-12">
             <label class="form-label">Fault</label>
+            <div *ngIf="faultIdFromTemplate == 'Not Found'" class="invalid-feedback d-block mb-3">{{faultIdFromTemplate}}</div>
             <div class="input-group">
-              <input formControlName="fault" class="form-control" list="faultDatalist">
-              <datalist id="faultDatalist">
-                <option value="Mouldy">
-                <option value="Sour">
-                <option value="Expired">
-              </datalist>
+              <input #faultValue
+                     type="text"
+                     class="form-control"
+                     [ngbTypeahead]="searchFault"
+                     [inputFormatter]="faultFormatter"
+                     [resultFormatter]="faultFormatter"
+                     [editable]="false"
+                     formcontrolName="fault"
+                     (blur)="getModel(faultValue.value, 'faultType')" />
               <button class="btn btn-outline-secondary" [routerLink]="['/fault-detail']" type="button">+</button>
             </div>
           </div>
         </div>
 
+
         <div class="row">
           <div class="mb-3 col-6">
             <label class="form-label">External Document No.</label>
-            <div *ngIf="docNo.invalid && (docNo.touched || docNo.dirty)" class="invalid-feedback d-block">
-              <div *ngIf="docNo.errors?.['required']">Document number is required</div>
+            <div *ngIf="getDocNo.invalid && (getDocNo.touched || getDocNo.dirty)" class="invalid-feedback d-block">
+              <div *ngIf="getDocNo.errors?.['required']">Document Number is required</div>
             </div>
             <input formControlName="docNo" type="text" class="form-control">
           </div>
 
           <div class="mb-3 col-6">
             <label class="form-label">Document Date</label>
-            <div *ngIf="docDate.invalid && (docDate.touched || docDate.dirty)" class="invalid-feedback d-block">
-              <div *ngIf="docDate.errors?.['required']">Document date is required</div>
+            <div *ngIf="getDocDate.invalid && (getDocDate.touched || getDocDate.dirty)" class="invalid-feedback d-block">
+              <div *ngIf="getDocDate.errors?.['required']">Document Date is required</div>
             </div>
             <input formControlName="docDate" type="date" class="form-control">
           </div>
@@ -131,16 +140,19 @@
           <textarea formControlName="comment" class="form-control" rows="3" maxlength="255"></textarea>
         </div>
 
+        <div class="invalid-feedback d-block mb-3" *ngIf="formInvalid.length > 0">
+          {{formInvalid}}
+        </div>
+
         <div class="row">
           <div class="col-md-12 mb-3">
             <button type="button" [routerLink]="['/']" class="btn-outline-danger btn col-6"><i class="fa fa-cancel"></i> Cancel</button>
             <button type="submit" class="btn-outline-success btn col-6"><i class="fa fa-save"></i> Save</button>
           </div>
         </div>
+
+      </div>
     </div>
   </div>
-
-</form>-->
-
-
+</form>
 

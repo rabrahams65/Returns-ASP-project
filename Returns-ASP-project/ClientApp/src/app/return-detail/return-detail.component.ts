@@ -30,6 +30,7 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
 
   notFound = 'Not Found'
   notLoaded = 'Not Loaded'
+  formInvalid = ''
 
   returnId: string = this.notLoaded
   batchDateDisable = false
@@ -199,7 +200,7 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
         productFound.map(p => { this.prodIdFromTemplate = p.id!; this.product.productName = p.productName! })
       }
       else {
-        this.prodIdFromTemplate = 'Not Found'
+        this.prodIdFromTemplate = this.notFound
       }
     }
     if (type == 'faultType') {
@@ -208,7 +209,7 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
         faultFound.map(f => { this.faultIdFromTemplate = f.id!; this.fault.name = f.name! })
       }
       else {
-        this.faultIdFromTemplate = 'Not Found'
+        this.faultIdFromTemplate = this.notFound
       }
     }
     if (type == 'ownerType') {
@@ -217,7 +218,7 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
         ownerFound.map(o => { this.ownerIdFromTemplate = o.id!; this.owner.firstName = o.firstName! })
       }
       else {
-        this.ownerIdFromTemplate = 'Not Found'
+        this.ownerIdFromTemplate = this.notFound
       }
     }
     
@@ -306,36 +307,46 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
       this.form.controls.comment.setValue(this.return.comment!)
     }
 
+    console.log("Form is valid?: " + this.form.valid)
 
-    //Conver objects to id's
+    if (this.form.invalid || this.custIdFromTemplate == this.notFound || this.prodIdFromTemplate == this.notFound || this.faultIdFromTemplate == this.notFound || this.ownerIdFromTemplate == this.notFound) {
+      console.log('The form is invalid')
+      this.formInvalid = 'The values provided is not correct, please try again.'
+      return
+    }
+
+
+    //Convert objects to id's
     let editedReturn: ReturnRm = {
       id: this.returnId,
       docDate: this.form.controls.docDate.value!,
-      customerId: this.form.controls.customer.value!,
-      productId: this.form.controls.product.value!,
+      customerId: this.custIdFromTemplate!,
+      productId: this.prodIdFromTemplate!,
       qtyOnDoc: this.form.controls.qtyOnDoc.value!,
       batchDate: this.form.controls.batchDate.value!,
-      ownerId: this.form.controls.owner.value!,
-      faultId: this.form.controls.fault.value!,
+      ownerId: this.ownerIdFromTemplate!,
+      faultId: this.faultIdFromTemplate!,
       docNo: this.form.controls.docNo.value!,
       qtyReturned: this.form.controls.qtyReturned.value!,
       resolved: this.form.controls.resolved.value!,
-      comment: this.form.controls.comment.value!
+      comment: this.form.controls.comment.value!,
+      userId: this.userId!
 
     }
 
-
-    if (this.form.invalid) {
-      //this.form.markAllAsTouched();
-      return
-    }
-    if (this.form.valid && this.form.dirty && this.form.touched) {
+    
+    this.showToast = true
+    if (this.form.valid) {
       this.message = 'Return updated successfully'
-      this.showToast = true
+      console.log('Form Valid: ' + this.form.valid)
+      console.log('Form Touched: ' + this.form.touched)
+      console.log('Form Dirty: ' + this.form.dirty)
     }
     else if (this.form.valid && !this.form.touched && !this.form.dirty) {
+      console.log('Form Valid: ' + this.form.valid)
+      console.log('Form Touched: ' + this.form.touched)
+      console.log('Form Dirty: ' + this.form.dirty)
       this.message = 'Nothing updated'
-      this.showToast = true
     }
   
     this.returnService.updateReturnReturn({ id: this.returnId, body: editedReturn }).subscribe(_ => { this.appService.setMessage(this.message); this.appService.showToast(this.showToast)},this.handleError)
