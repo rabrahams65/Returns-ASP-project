@@ -18,6 +18,7 @@ export class SearchReturnsComponent implements OnInit {
 
   notAssigned = 'Not Assigned'
   returns: ReturnRm[] = []
+  returnsInit: ReturnRm[] = []
   docDateInvisible: boolean = true;
   noDateInvisible: boolean = true;
   noDateChecked = false;
@@ -77,9 +78,21 @@ export class SearchReturnsComponent implements OnInit {
       this.getUserId();
     })
 
-    this.search()
+    this.returnService.searchReturn({}).subscribe(r => {
+      this.collectionSize = r.length
+      this.numberOfResults = r.length
+      this.setReturnsInit(r)
+      console.log(r)
+    })
+
+    
     //this.returns.filter( r => r = r )
     
+  }
+
+  setReturnsInit = (initReturns: ReturnRm[]) => {
+    this.returnsInit = initReturns
+    console.log('In the setReturnsInit method: ' + this.returnsInit)
   }
 
   toggleDocDate() {
@@ -100,36 +113,31 @@ export class SearchReturnsComponent implements OnInit {
     }
   }
 
-  search()  {
+  search() {
+
+    this.setReturnsInit
+
+    this.returns = []
     
+      this.returnsInit.forEach(items => {
 
-    this.returnService.searchReturn({})
-      .subscribe(response => {
-        this.collectionSize = response.length
-        this.numberOfResults = response.length
-        response.forEach(items => {
+ 
+          this.customerList.filter(c => items.customerId == c.id).map(c => this.customerName = c.customerName!)
 
-          do {
-            this.customerList.filter(c => items.customerId == c.id).map(c => this.customerName = c.customerName!)
-            this.productList.filter(p => items.productId == p.id).map(p => this.productName = p.productName!)
-            this.ownerList.filter(o => items.ownerId == o.id).map(o => this.ownerName = o.firstName!)
-            this.faultList.filter(f => items.faultId == f.id).map(f => this.faultName = f.name!)
-          }
-          while (this.customerName == this.notAssigned || this.productName == this.notAssigned || this.faultName == this.notAssigned || this.ownerName == this.notAssigned)
+          this.productList.filter(p => items.productId == p.id).map(p => this.productName = p.productName!)
+
+          this.ownerList.filter(o => items.ownerId == o.id).map(o => this.ownerName = o.firstName!)
+
+          this.faultList.filter(f => items.faultId == f.id).map(f => this.faultName = f.name!)
 
           this.returns.push({
             id: items.id, customerId: this.customerName, productId: this.productName, ownerId: this.ownerName, faultId: this.faultName,
             batchDate: items.batchDate, comment: items.comment, dateUpdated: items.dateUpdated, docDate: items.docDate,
             docNo: items.docNo, qtyOnDoc: items.qtyOnDoc, qtyReturned: items.qtyReturned, resolved: items.resolved, userId: items.userId
           })
+      })
 
-          console.log(response)
-          console.log(this.returns)
-        })
-
-       
-      },
-        this.handleError)
+    
     
   }
 
@@ -185,7 +193,6 @@ export class SearchReturnsComponent implements OnInit {
 
   private setAllCustomers(customers: CustomerRm[]) {
     this.customerList = customers
-    console.log(this.customerList)
   }
 
   private setAllProducts(products: ProductRm[]) {

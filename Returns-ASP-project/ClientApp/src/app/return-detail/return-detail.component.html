@@ -33,7 +33,6 @@
         <div class="mb-3 col-12">
           <label class="form-label">Product</label>
           <div *ngIf="prodIdFromTemplate == 'Not Found'" class="invalid-feedback d-block">{{prodIdFromTemplate}}</div>
-          <p>{{prodIdFromTemplate}}</p>
           <div *ngIf="getProduct.invalid && (getProduct.touched || getProduct.dirty)" class="invalid-feedback d-block">
             <div *ngIf="getProduct.errors?.['required']">Product is required</div>
           </div>
