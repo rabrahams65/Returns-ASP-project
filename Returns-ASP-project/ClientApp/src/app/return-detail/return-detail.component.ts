@@ -1,4 +1,4 @@
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,8 @@ import { debounceTime, distinctUntilChanged, filter, map, Observable, OperatorFu
 @Component({
   selector: 'app-return-detail',
   templateUrl: './return-detail.component.html',
-  styleUrls: ['./return-detail.component.css']
+  styleUrls: ['./return-detail.component.css'],
+  providers: [DatePipe]
 })
 export class ReturnDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('resolvedDropdown', { static: true }) resolvedDropdownRef?: ElementRef<HTMLElement>;
@@ -20,7 +21,7 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
 
   constructor(private route: ActivatedRoute, private returnService: ReturnService, private router: Router, private authService: AuthService,
     private fb: FormBuilder, @Inject(LOCALE_ID) private locale: string, private appService: AppService, private userService: UserService, private customerService: CustomerService,
-    private productService: ProductService, private faultService: FaultService, private ownerService: OwnerService) {
+    private productService: ProductService, private faultService: FaultService, private ownerService: OwnerService,private datePipe: DatePipe) {
 
 }
 
@@ -155,6 +156,13 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
       this.faultService.findFault({ id: r.faultId! }).subscribe(f => { this.setFaultName(f); this.faultIdFromTemplate = f.id! }, this.handleError)
       this.ownerService.findOwner({ id: r.ownerId! }).subscribe(o => { this.setOwnerName(o); this.ownerIdFromTemplate = o.id! }, this.handleError)
       //this.userService.findUser({ }) set up endpoint to find user by Id as well
+      this.form.controls.qtyOnDoc.setValue(r.qtyOnDoc!)
+      this.form.controls.qtyReturned.setValue(r.qtyReturned!)
+      this.form.controls.batchDate.setValue(r.batchDate!)
+      this.form.controls.docNo.setValue(r.docNo!)
+      this.form.controls.docDate.setValue(this.datePipe.transform(new Date(r.docDate!), 'yyyy-MM-dd'))
+      this.form.controls.resolved.setValue(r.resolved!)
+      this.form.controls.comment.setValue(r.comment!)
     }
       , this.handleError);
   }
@@ -270,12 +278,12 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
     if (!this.getCustomer.touched || !this.getCustomer.dirty) {
       this.form.controls.customer.setValue(this.customer.customerName!)
     }
-    if ((!this.getDocDate.touched || !this.getDocDate.dirty) && this.getDocDate.value != '') {
-      this.form.controls.docDate.setValue(formatDate(this.return.docDate!, 'yyyy-MM-dd', this.locale))
-    }
-    if (!this.getDocDate.touched || !this.getDocDate.dirty && this.getDocDate.value == null) {
-      this.form.controls.docDate.setValue(this.return.docDate!)
-    }
+    //if ((!this.getDocDate.touched || !this.getDocDate.dirty) && this.getDocDate.value != '') {
+    //  this.form.controls.docDate.setValue(formatDate(this.return.docDate!, 'yyyy-MM-dd', this.locale))
+    //}
+    //if (!this.getDocDate.touched || !this.getDocDate.dirty && this.getDocDate.value == null) {
+    //  this.form.controls.docDate.setValue(this.return.docDate!)
+    //}
     if (!this.getProduct.touched || !this.getProduct.dirty) {
       this.form.controls.product.setValue(this.product.productName!)
     }
@@ -319,7 +327,7 @@ export class ReturnDetailComponent implements OnInit, AfterViewInit {
     //Convert objects to id's
     let editedReturn: ReturnRm = {
       id: this.returnId,
-      docDate: this.form.controls.docDate.value!,
+      docDate: this.form.controls.docDate.value!.toString(),
       customerId: this.custIdFromTemplate!,
       productId: this.prodIdFromTemplate!,
       qtyOnDoc: this.form.controls.qtyOnDoc.value!,

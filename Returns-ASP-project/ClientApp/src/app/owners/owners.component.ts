@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OwnerRm } from '../api/models';
 import { OwnerService } from '../api/services';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-owners',
@@ -9,9 +10,26 @@ import { OwnerService } from '../api/services';
 })
 export class OwnersComponent implements OnInit {
 
-  constructor(private ownerService: OwnerService  ) { }
+  constructor(private ownerService: OwnerService, private appService: AppService) {
+    this.appService.getToast.subscribe(t => {
+      this.showToast = t;
+
+      console.log('Message: ' + this.messageFromDetail)
+      console.log('Show toast?: ' + this.showToast)
+
+      if (this.showToast == true) {
+        this.appService.getMessage.subscribe(m => {
+          this.messageFromDetail = m;
+          console.log('Message: ' + this.messageFromDetail)
+          console.log('Show toast?: ' + this.showToast) })
+        setTimeout(() => (this.showToast = false), 3000);
+      }
+    })
+  }
 
   ownerList: OwnerRm[] = []
+  showToast = false;
+  messageFromDetail = '';
 
   ngOnInit(): void {
     this.ownerService.searchOwner().subscribe( o => this.ownerList = o, this.handleError)

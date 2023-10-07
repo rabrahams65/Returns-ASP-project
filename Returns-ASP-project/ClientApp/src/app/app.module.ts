@@ -21,6 +21,10 @@ import { ReturnDetailComponent } from './return-detail/return-detail.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
+import { AddFaultComponent } from './add-fault/add-fault.component';
+import { AddCustomerComponent } from './add-customer/add-customer.component';
+import { AddOwnerComponent } from './add-owner/add-owner.component';
+import { AddProductComponent } from './add-product/add-product.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,11 @@ import { AppRoutingModule } from './app-routing.module';
     OwnerDetailComponent,
     ProductDetailComponent,
     ReturnDetailComponent,
-    RegisterUserComponent
+    RegisterUserComponent,
+    AddFaultComponent,
+    AddCustomerComponent,
+    AddOwnerComponent,
+    AddProductComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -57,7 +65,11 @@ import { AppRoutingModule } from './app-routing.module';
       { path: 'product-detail/:productId', component: ProductDetailComponent },
       { path: 'owner-detail/:ownerId', component: OwnerDetailComponent },
       { path: 'fault-detail/:faultId', component: FaultDetailComponent },
-      { path: 'register-user', component: RegisterUserComponent }
+      { path: 'register-user', component: RegisterUserComponent },
+      { path: 'add-fault', component: AddFaultComponent },
+      { path: 'add-customer', component: AddCustomerComponent },
+      { path: 'add-product', component: AddProductComponent },
+      { path: 'add-owner', component: AddOwnerComponent }
     ]),
     NgbModule,
     AppRoutingModule

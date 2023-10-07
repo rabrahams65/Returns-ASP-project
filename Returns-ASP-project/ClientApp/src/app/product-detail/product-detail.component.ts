@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged, filter, map, Observable, OperatorFunction } from 'rxjs';
 import { ProductRm } from '../api/models';
 import { ProductService } from '../api/services';
 
@@ -23,6 +22,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   product: ProductRm = {}
+  productList: ProductRm[] = []
   productId = ''
   productAlreadyExists = 'Product already exists'
   shortCodeAlreadyExists = 'Short Code already exists'
@@ -45,11 +45,14 @@ export class ProductDetailComponent implements OnInit {
 
   findProduct = (productId: string | null) => {
     this.productId = productId ?? 'Not passed'
-    this.productService.findProduct({ id: productId! }).subscribe(p => this.product = p,this.handleError)
+    this.productService.findProduct({ id: productId! }).subscribe(p => {
+      this.product = p
+      this.form.controls.productName.setValue(p.productName!)
+      this.form.controls.price.setValue(p.price!)
+      this.form.controls.weight.setValue(p.weight!)
+      this.form.controls.shortCode.setValue(p.shortCode!)
+    }, this.handleError)
   }
-
-  productList: ProductRm[] = []
-
 
 
   private handleError = (err: any) => {
@@ -83,18 +86,18 @@ export class ProductDetailComponent implements OnInit {
 
     if (this.prodIdFromTemplate == this.productAlreadyExists || this.shortCodeFromTemplate == this.shortCodeAlreadyExists)
       return
-    if (!this.getProductName.touched || !this.getProductName.dirty) {
-      this.getProductName.setValue(this.product.productName!)
-    }
-    if (!this.getPrice.touched || !this.getPrice.dirty) {
-      this.getPrice.setValue(this.product.price!)
-    }
-    if (!this.getWeight.touched || !this.getWeight.dirty) {
-      this.getWeight.setValue(this.product.weight!)
-    }
-    if (!this.getShortCode.touched || !this.getShortCode.dirty) {
-      this.getShortCode.setValue(this.product.shortCode!)
-    }
+    //if (!this.getProductName.touched || !this.getProductName.dirty) {
+    //  this.getProductName.setValue(this.product.productName!)
+    //}
+    //if (!this.getPrice.touched || !this.getPrice.dirty) {
+    //  this.getPrice.setValue(this.product.price!)
+    //}
+    //if (!this.getWeight.touched || !this.getWeight.dirty) {
+    //  this.getWeight.setValue(this.product.weight!)
+    //}
+    //if (!this.getShortCode.touched || !this.getShortCode.dirty) {
+    //  this.getShortCode.setValue(this.product.shortCode!)
+    //}
 
       console.log(
         'id :' + this.product.id +
@@ -112,9 +115,14 @@ export class ProductDetailComponent implements OnInit {
       shortCode: this.getShortCode.value?.toUpperCase()
     }
 
-    this.productService.updateProduct({ id: this.product.id!, body: editedProduct }).subscribe()
-    this.router.navigate(['/products'])
-
+    this.productService.updateProduct({ id: this.product.id!, body: editedProduct }).subscribe(() => {
+      this.productService.findProduct({ id: editedProduct.id! }).subscribe(p => {
+        if (p.id == editedProduct.id && p.productName == editedProduct.productName && p.price == editedProduct.price
+          && p.shortCode == editedProduct.shortCode && p.weight == editedProduct.weight) {
+          this.router.navigate(['/products'])
+        }
+      })
+    })
   }
 
   productExists(modelName: string) {
@@ -125,8 +133,7 @@ export class ProductDetailComponent implements OnInit {
         this.prodIdFromTemplate = this.productAlreadyExists
 
       }
-    }
-      
+    } 
   }
 
   shortCodeExists(shortCode: string) {

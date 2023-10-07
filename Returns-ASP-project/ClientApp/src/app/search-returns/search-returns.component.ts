@@ -70,8 +70,6 @@ export class SearchReturnsComponent implements OnInit {
     this.faultService.searchFault().subscribe(f => this.setAllFaults(f))
     //this.userService.f
 
-    
-
     this.userService.findUser({ email: this.authService.currentUser?.email! }).subscribe(u => {
       this.userId = u.id!;
 
@@ -85,9 +83,7 @@ export class SearchReturnsComponent implements OnInit {
       console.log(r)
     })
 
-    
     //this.returns.filter( r => r = r )
-    
   }
 
   setReturnsInit = (initReturns: ReturnRm[]) => {

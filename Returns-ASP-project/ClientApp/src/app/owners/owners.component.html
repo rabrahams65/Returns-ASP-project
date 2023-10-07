@@ -1,6 +1,12 @@
 <h2>Owners</h2>
 <hr />
 
+<div style="float:right" class="mx-5">
+  <ngb-toast *ngIf="showToast" header="Info" [autohide]="false" (hidden)="showToast=false" style="z-index: 100; position: absolute;">
+    {{messageFromDetail}}
+  </ngb-toast>
+</div>
+
 <form class="row g-3 align-items-center">
   <div class="col-10">
     <div class="input-group">
