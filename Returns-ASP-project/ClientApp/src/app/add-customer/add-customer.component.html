@@ -1,1 +1,63 @@
-<p>add-customer works!</p>
+<h3>Add Customer</h3>
+<hr />
+
+<div class="center shadow-custom mb-3">
+  <div class="container">
+    <form [formGroup]="form" (ngSubmit)="save()">
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Customer Name</label>
+          <div *ngIf="customerIdFromTemplate == customerAlreadyExists" class="invalid-feedback d-block">{{customerIdFromTemplate}}</div>
+          <div class="input-group">
+            <input #customerFormValue
+                   type="text"
+                   class="form-control"
+                   formControlName="customerName"
+                   (keyup)="customerExists(customerFormValue.value)" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Email Address</label>
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   formControlName="email" />
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3 col-12">
+        <label class="form-label">Address</label>
+        <textarea formControlName="address"
+                  class="form-control" rows="3"
+                  maxlength="255"></textarea>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Short Code</label>
+          <div *ngIf="shortCodeFromTemplate == shortCodeAlreadyExists" class="invalid-feedback d-block">{{shortCodeFromTemplate}}</div>
+          <input #shortCodeValue
+                 type="text"
+                 class="form-control"
+                 formControlName="shortCode"
+                 (keyup)="shortCodeExists(shortCodeValue.value)">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <button type="button" [routerLink]="['/customers']" class="btn-outline-danger btn col-6"><i class="fa fa-cancel"></i> Cancel</button>
+          <button type="submit" class="btn-outline-success btn col-6"><i class="fa fa-save"></i> Save</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+

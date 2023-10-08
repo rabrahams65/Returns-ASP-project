@@ -6,6 +6,7 @@ import { CustomerRm, FaultRm, OwnerRm, ProductRm, ReturnDto, ReturnRm } from '..
 import { CustomerService, FaultService, OwnerService, ProductService, ReturnService, UserService } from '../api/services';
 import { AppService } from '../app.service';
 import { AuthService } from '../auth/auth.service';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-new',
@@ -15,10 +16,11 @@ import { AuthService } from '../auth/auth.service';
 export class AddNewComponent implements OnInit {
 
   batchDateToggle = false;
+  closeResult = '';
 
   constructor(private fb: FormBuilder, private returnService: ReturnService, private router: Router, private appService: AppService, private userService: UserService,
     private customerService: CustomerService, private productService: ProductService, private faultService: FaultService, private ownerService: OwnerService,
-    private authService: AuthService  ) { }
+    private authService: AuthService, private modalService: NgbModal ) { }
 
   customer: CustomerRm = {}
   product: ProductRm = {}
@@ -43,6 +45,10 @@ export class AddNewComponent implements OnInit {
     this.userService.findUser({ email: this.authService.currentUser?.email! }).subscribe(u => {
       this.getUserId(u.id!); console.log('The user id in the oninit subscribe call is: ' + this.userId)
     })
+    this.customerService.searchCustomer().subscribe(c => this.customerList = c, this.handleError)
+    this.productService.searchProduct().subscribe(p => this.productList = p, this.handleError)
+    this.faultService.searchFault().subscribe(f => this.faultList = f, this.handleError)
+    this.ownerService.searchOwner().subscribe(o => this.ownerList = o, this.handleError)
   }
 
   private getUserId = (userId: string) => {
@@ -73,7 +79,7 @@ export class AddNewComponent implements OnInit {
 
   //Gets all customers for searchbox
   searchCust: OperatorFunction<string, readonly { id?: string | undefined | null; name?: string | undefined | null }[]> = (text$: Observable<string>) => {
-    this.customerService.searchCustomer().subscribe(c => this.customerList = c, this.handleError)
+    
 
     return text$.pipe(
       debounceTime(200),
@@ -85,7 +91,7 @@ export class AddNewComponent implements OnInit {
 
   //Gets all products for searchbox
   searchProd: OperatorFunction<string, readonly { id?: string | undefined | null; name?: string | undefined | null }[]> = (text$: Observable<string>) => {
-    this.productService.searchProduct().subscribe(p => this.productList = p, this.handleError)
+
 
     return text$.pipe(
       debounceTime(200),
@@ -97,7 +103,7 @@ export class AddNewComponent implements OnInit {
 
   //Gets all faults for searchbox
   searchFault: OperatorFunction<string, readonly { id?: string | undefined | null; name?: string | undefined | null }[]> = (text$: Observable<string>) => {
-    this.faultService.searchFault().subscribe(f => this.faultList = f, this.handleError)
+
 
     return text$.pipe(
       debounceTime(200),
@@ -109,7 +115,7 @@ export class AddNewComponent implements OnInit {
 
   //Gets all owners for searchbox
   searchOwner: OperatorFunction<string, readonly { id?: string | undefined | null; name?: string | undefined | null }[]> = (text$: Observable<string>) => {
-    this.ownerService.searchOwner().subscribe(o => this.ownerList = o, this.handleError)
+
 
     return text$.pipe(
       debounceTime(200),
@@ -264,5 +270,99 @@ export class AddNewComponent implements OnInit {
     return this.form.controls.comment
   }
 
+  //modals
+
+  //Modal Forms
+  newCustomerForm = this.fb.group({
+    customerName: [''],
+    email: [''],
+    address: [''],
+    shortCode: [''],
+  })
+  //
+    //customer Modal
+  openCustomerModal(content: any) {
+    this.newCustomerForm.reset()
+    this.customerIdFromTemplate = ''
+    this.customerShortCodeFromTemplate = ''
+
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+        this.saveNewCustomer()
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      },
+    );
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+    //customer Modal
+  //modal extensions
+  customerIdFromTemplate = ''
+  customerShortCodeFromTemplate = ''
+  customerAlreadyExists = 'Customer already exists'
+  customerShortCodeAlreadyExists = 'Short code already exists'
+
+
+  saveNewCustomer() {
+    if (this.customerIdFromTemplate == this.customerAlreadyExists || this.customerShortCodeFromTemplate == this.customerShortCodeAlreadyExists) {
+      return
+    }
+
+    let newCustomer: CustomerRm = {
+      customerName: this.newCustomerForm.controls.customerName.value,
+      email: this.newCustomerForm.controls.email.value,
+      address: this.newCustomerForm.controls.address.value,
+      shortCode: this.newCustomerForm.controls.shortCode.value
+    }
+
+    this.customerService.createCustomer({ body: newCustomer }).subscribe(() => {
+      this.showToast = true
+      if (this.form.valid) {
+        this.message = 'Customer added successfully'
+        console.log('Customer added successfully')
+        this.customerList = []
+        this.customerService.searchCustomer().subscribe(c => this.customerList = c, this.handleError)
+      }
+      else if (this.form.valid && !this.form.touched && !this.form.dirty) {
+        this.message = 'Nothing added'
+        console.log('Nothing added')
+      }
+      //this.appService.setMessage(this.message);
+      //this.appService.showToast(this.showToast)
+      console.log('customer control raw value: ' + this.form.controls.customer.value)
+    })
+
+  }
+
+  customerExists(customerName: string) {
+    this.customerIdFromTemplate = ''
+    if (this.customer.customerName?.toLowerCase().trim() != customerName.toLowerCase().trim()) {
+      let customerFound = this.customerList.filter(c => c.customerName?.toLowerCase().trim() == customerName.toLowerCase().trim())
+      if (customerFound.length > 0) {
+        this.customerIdFromTemplate = this.customerAlreadyExists
+      }
+    }
+  }
+
+  customerShortCodeExists(shortCode: string) {
+    this.customerShortCodeFromTemplate = ''
+    if (this.customer.shortCode?.toLowerCase().trim() != shortCode.toLowerCase().trim()) {
+      let skuFound = this.customerList.filter(s => s.shortCode?.toLowerCase().trim() == shortCode.toLowerCase().trim())
+      if (skuFound.length > 0) {
+        this.customerShortCodeFromTemplate = this.customerShortCodeAlreadyExists
+      }
+    }
+  }
 }
 

@@ -1,6 +1,66 @@
 <h2>Add New Return</h2>
 <hr />
 
+<!--Modals-->
+<ng-template #custContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add New Customer</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="newCustomerForm">
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Customer Name</label>
+          <div *ngIf="customerIdFromTemplate == customerAlreadyExists" class="invalid-feedback d-block">{{customerIdFromTemplate}}</div>
+          <div class="input-group">
+            <input #customerFormValue
+                   type="text"
+                   class="form-control"
+                   formControlName="customerName"
+                   (keyup)="customerExists(customerFormValue.value)" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Email Address</label>
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   formControlName="email" />
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3 col-12">
+        <label class="form-label">Address</label>
+        <textarea formControlName="address"
+                  class="form-control" rows="3"
+                  maxlength="255"></textarea>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Short Code</label>
+          <div *ngIf="customerShortCodeFromTemplate == customerShortCodeAlreadyExists" class="invalid-feedback d-block">{{customerShortCodeFromTemplate}}</div>
+          <input #customerShortCodeValue
+                 type="text"
+                 class="form-control"
+                 formControlName="shortCode"
+                 (keyup)="customerShortCodeExists(customerShortCodeValue.value)">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
+<!--Modals-->
+
 <form [formGroup]="form" (ngSubmit)="save()">
   <div class="center shadow-custom mb-3">
     <div class="container">
@@ -8,7 +68,7 @@
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Customer</label>
-          <div *ngIf="custIdFromTemplate == 'Not Found'" class="invalid-feedback d-block mb-3">{{custIdFromTemplate}}</div>
+          <div *ngIf="custIdFromTemplate == 'Not Found' && customerValue.value != ''" class="invalid-feedback d-block mb-3">{{custIdFromTemplate}}</div>
           <div class="input-group">
             <input #customerValue
                    type="text"
@@ -16,10 +76,9 @@
                    [ngbTypeahead]="searchCust"
                    [inputFormatter]="custFormatter"
                    [resultFormatter]="custFormatter"
-                   [editable]="true"
                    formcontrolName="getCustomer"
                    (blur)="getModel(customerValue.value, 'customerType')" />
-            <button class="btn btn-outline-secondary" [routerLink]="['/customer-detail']" type="button">+</button>
+            <button class="btn btn-outline-secondary" (click)="openCustomerModal(custContent)" type="button">+</button>
           </div>
         </div>
       </div>
@@ -27,7 +86,7 @@
       <div class="row">
         <div class="mb-3 col-12">
           <label class="form-label">Product</label>
-          <div *ngIf="prodIdFromTemplate == 'Not Found'" class="invalid-feedback d-block mb-3">{{prodIdFromTemplate}}</div>
+          <div *ngIf="prodIdFromTemplate == 'Not Found' && prodValue.value != ''" class="invalid-feedback d-block mb-3">{{prodIdFromTemplate}}</div>
           <div class="input-group">
             <input #prodValue
                    type="text"
@@ -35,7 +94,6 @@
                    [ngbTypeahead]="searchProd"
                    [inputFormatter]="prodFormatter"
                    [resultFormatter]="prodFormatter"
-                   [editable]="false"
                    formcontrolName="product"
                    (blur)="getModel(prodValue.value, 'productType')" />
             <button class="btn btn-outline-secondary" [routerLink]="['/product-detail']" type="button">+</button>
@@ -71,7 +129,7 @@
         <div class="row">
           <div class="mb-3 col-12">
             <label class="form-label">Owner</label>
-            <div *ngIf="ownerIdFromTemplate == 'Not Found'" class="invalid-feedback d-block mb-3">{{ownerIdFromTemplate}}</div>
+            <div *ngIf="ownerIdFromTemplate == 'Not Found' && ownerValue.value != ''" class="invalid-feedback d-block mb-3">{{ownerIdFromTemplate}}</div>
             <div class="input-group">
               <input #ownerValue
                      type="text"
@@ -90,7 +148,7 @@
         <div class="row">
           <div class="mb-3 col-12">
             <label class="form-label">Fault</label>
-            <div *ngIf="faultIdFromTemplate == 'Not Found'" class="invalid-feedback d-block mb-3">{{faultIdFromTemplate}}</div>
+            <div *ngIf="faultIdFromTemplate == 'Not Found' && faultValue.value != ''" class="invalid-feedback d-block mb-3">{{faultIdFromTemplate}}</div>
             <div class="input-group">
               <input #faultValue
                      type="text"

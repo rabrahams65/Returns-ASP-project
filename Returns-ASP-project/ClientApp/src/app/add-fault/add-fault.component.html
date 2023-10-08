@@ -1,1 +1,41 @@
-<p>add-fault works!</p>
+<h3>Add Fault</h3>
+<hr />
+
+<form [formGroup]="form" (ngSubmit)="save()">
+  <div class="center shadow-custom mb-3">
+    <div class="container">
+
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Fault Name</label>
+          <div *ngIf="faultIdFromTemplate == faultAlreadyExists" class="invalid-feedback d-block">{{faultIdFromTemplate}}</div>
+          <div class="input-group">
+            <input #faultFormValue
+                   type="text"
+                   class="form-control"
+                   formControlName="faultName"
+                   (keyup)="faultExists(faultFormValue.value)" />
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3 col-12">
+        <label class="form-label">Description</label>
+        <textarea formControlName="description"
+                  class="form-control" rows="3"
+                  maxlength="255"></textarea>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <button type="button" [routerLink]="['/faults']" class="btn-outline-danger btn col-6"><i class="fa fa-cancel"></i> Cancel</button>
+          <button type="submit" class="btn-outline-success btn col-6"><i class="fa fa-save"></i> Save</button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</form>
+

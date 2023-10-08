@@ -1,1 +1,40 @@
-<p>add-owner works!</p>
+<h3>Add Owner</h3>
+<hr />
+
+<div class="center shadow-custom mb-3">
+  <div class="container">
+    <form [formGroup]="form" (ngSubmit)="save()">
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">First Name</label>
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   formControlName="firstName" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Last Name</label>
+          <input type="text"
+                 class="form-control"
+                 formControlName="lastName">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <button type="button" [routerLink]="['/owners']" class="btn-outline-danger btn col-6"><i class="fa fa-cancel"></i> Cancel</button>
+          <button type="submit" class="btn-outline-success btn col-6"><i class="fa fa-save"></i> Save</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+

@@ -133,7 +133,7 @@ namespace Returns_ASP_project.Controllers
         [ProducesResponseType(typeof(NewCustomerDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(NewCustomerDto), StatusCodes.Status201Created)]
         [HttpPost]
-        public IActionResult CreateReturn(NewCustomerDto dto)
+        public IActionResult Create(NewCustomerDto dto)
         {
 
             var newCustomer = new Customer(Guid.NewGuid(), dto.CustomerName, dto.ShortCode, dto.Email, dto.Address);
@@ -147,7 +147,7 @@ namespace Returns_ASP_project.Controllers
             }
             catch (DbUpdateConcurrencyException e)
             {
-                return Conflict(new { message = "An error occured while trying to create a new return. Please try again. " + e.Message });
+                return Conflict(new { message = "An error occured while trying to create a new customer. Please try again. " + e.Message });
             }
 
             return CreatedAtAction(nameof(Find), new { id = newCustomer.Id });

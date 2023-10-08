@@ -105,22 +105,22 @@ export class CustomerService extends BaseService {
     );
   }
 
-  /** Path part for operation `createReturnCustomer()` */
-  static readonly CreateReturnCustomerPath = '/Customer';
+  /** Path part for operation `createCustomer()` */
+  static readonly CreateCustomerPath = '/Customer';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `createReturnCustomer$Plain()` instead.
+   * To access only the response body, use `createCustomer$Plain()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  createReturnCustomer$Plain$Response(
+  createCustomer$Plain$Response(
     params?: {
       body?: NewCustomerDto
     },
     context?: HttpContext
   ): Observable<StrictHttpResponse<NewCustomerDto>> {
-    const rb = new RequestBuilder(this.rootUrl, CustomerService.CreateReturnCustomerPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, CustomerService.CreateCustomerPath, 'post');
     if (params) {
       rb.body(params.body, 'application/*+json');
     }
@@ -137,34 +137,34 @@ export class CustomerService extends BaseService {
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `createReturnCustomer$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `createCustomer$Plain$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  createReturnCustomer$Plain(
+  createCustomer$Plain(
     params?: {
       body?: NewCustomerDto
     },
     context?: HttpContext
   ): Observable<NewCustomerDto> {
-    return this.createReturnCustomer$Plain$Response(params, context).pipe(
+    return this.createCustomer$Plain$Response(params, context).pipe(
       map((r: StrictHttpResponse<NewCustomerDto>): NewCustomerDto => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `createReturnCustomer()` instead.
+   * To access only the response body, use `createCustomer()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  createReturnCustomer$Response(
+  createCustomer$Response(
     params?: {
       body?: NewCustomerDto
     },
     context?: HttpContext
   ): Observable<StrictHttpResponse<NewCustomerDto>> {
-    const rb = new RequestBuilder(this.rootUrl, CustomerService.CreateReturnCustomerPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, CustomerService.CreateCustomerPath, 'post');
     if (params) {
       rb.body(params.body, 'application/*+json');
     }
@@ -181,17 +181,17 @@ export class CustomerService extends BaseService {
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `createReturnCustomer$Response()` instead.
+   * To access the full response (for headers, for example), `createCustomer$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  createReturnCustomer(
+  createCustomer(
     params?: {
       body?: NewCustomerDto
     },
     context?: HttpContext
   ): Observable<NewCustomerDto> {
-    return this.createReturnCustomer$Response(params, context).pipe(
+    return this.createCustomer$Response(params, context).pipe(
       map((r: StrictHttpResponse<NewCustomerDto>): NewCustomerDto => r.body)
     );
   }
