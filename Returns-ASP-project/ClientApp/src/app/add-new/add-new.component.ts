@@ -51,27 +51,6 @@ export class AddNewComponent implements OnInit {
     this.ownerService.searchOwner().subscribe(o => this.ownerList = o, this.handleError)
   }
 
-  private getUserId = (userId: string) => {
-    this.userId = userId
-  }
-
-  form = this.fb.group({
-    customer: ['', Validators.nullValidator],
-    product: ['', Validators.nullValidator],
-    qtyOnDoc: [0],
-    qtyReturned: [0],
-    batchDate: [],
-    owner: [''],
-    fault: [''],
-    docNo: ['', Validators.required],
-    docDate: [,Validators.required],
-    resolved: [],
-    comment: ['']
-  })
-
-  showToast = false;
-  message = 'Something went wrong'
-
   custFormatter = (customer: CustomerRm) => customer.customerName!
   prodFormatter = (product: ProductRm) => product.productName!
   faultFormatter = (fault: FaultRm) => fault.name!
@@ -79,8 +58,6 @@ export class AddNewComponent implements OnInit {
 
   //Gets all customers for searchbox
   searchCust: OperatorFunction<string, readonly { id?: string | undefined | null; name?: string | undefined | null }[]> = (text$: Observable<string>) => {
-    
-
     return text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
@@ -91,8 +68,6 @@ export class AddNewComponent implements OnInit {
 
   //Gets all products for searchbox
   searchProd: OperatorFunction<string, readonly { id?: string | undefined | null; name?: string | undefined | null }[]> = (text$: Observable<string>) => {
-
-
     return text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
@@ -103,8 +78,6 @@ export class AddNewComponent implements OnInit {
 
   //Gets all faults for searchbox
   searchFault: OperatorFunction<string, readonly { id?: string | undefined | null; name?: string | undefined | null }[]> = (text$: Observable<string>) => {
-
-
     return text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
@@ -115,8 +88,6 @@ export class AddNewComponent implements OnInit {
 
   //Gets all owners for searchbox
   searchOwner: OperatorFunction<string, readonly { id?: string | undefined | null; name?: string | undefined | null }[]> = (text$: Observable<string>) => {
-
-
     return text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
@@ -125,73 +96,121 @@ export class AddNewComponent implements OnInit {
     );
   }
 
+
+  private getUserId = (userId: string) => {
+    this.userId = userId
+  }
+
+  form = this.fb.group({
+
+    customer: [{ id: '', customerName: '' }, Validators.required],
+    product: [{ id: '', productName: '' }, Validators.required],
+    qtyOnDoc: [0],
+    qtyReturned: [0],
+    batchDate: [],
+    owner: [{ id: '', ownerName: '' }],
+    fault: [{ id: '', faultName: '' }],
+    docNo: ['', Validators.required],
+    docDate: [,Validators.required],
+    resolved: [],
+    comment: ['']
+  })
+
+  showToast = false;
+  message = 'Something went wrong'
+
   //Gets the id and name of the model in the search criteria
   getModel(modelName: string, type: string) {
-    let modelFound: any[] = []
 
     //Get the type of model
     if (type == 'customerType') {
-      let customerFound = this.customerList.filter(c => c.customerName == modelName)
-      console.log(customerFound.length)
-      if (customerFound.length > 0) {
-        customerFound.map(c => { this.custIdFromTemplate = c.id!; this.customer.customerName = c.customerName! })
-      }
-      else {
-        this.custIdFromTemplate = this.notFound
-      }
+      this.custIdFromTemplate = ''
+      this.customerList = []
+      this.customerService.searchCustomer().subscribe(c => {
+        this.customerList = c
+        console.log('2. searchCustomer subscribe call done')
+
+        let customerFound = this.customerList.filter(c => c.customerName?.toLowerCase().trim() == modelName?.toLowerCase().trim())
+        console.log('3. customer found length: ' + customerFound.length)
+
+        if (customerFound.length > 0) {
+          customerFound.map(c => { this.custIdFromTemplate = c.id!; this.customer.customerName = c.customerName! })
+          console.log('4.Get model gets called- custIdfromTemplate: {' + this.custIdFromTemplate + '} model name: ' + modelName)
+        }
+        else if (customerFound.length <= 0) {
+          this.custIdFromTemplate = this.notFound
+        }
+
+      })
+
+    }
+    if (type == 'productType') {
+      this.prodIdFromTemplate = ''
+      this.productList = []
+      this.productService.searchProduct().subscribe(c => {
+        this.productList = c
+        console.log('2. searchproduct subscribe call done')
+
+        let productFound = this.productList.filter(c => c.productName?.toLowerCase().trim() == modelName?.toLowerCase().trim())
+        console.log('3. product found length: ' + productFound.length)
+
+        if (productFound.length > 0) {
+          productFound.map(c => { this.prodIdFromTemplate = c.id!; this.product.productName = c.productName! })
+          console.log('4.Get model gets called- prodIdfromTemplate: {' + this.prodIdFromTemplate + '} model name: ' + modelName)
+        }
+        else if (productFound.length <= 0) {
+          this.prodIdFromTemplate = this.notFound
+        }
+
+      })
+
     }
 
-    if (type == 'productType') {
-      let productFound = this.productList.filter(p => p.productName == modelName)
-      if (productFound.length > 0) {
-        productFound.map(p => { this.prodIdFromTemplate = p.id!; this.product.productName = p.productName! })
-      }
-      else {
-        this.prodIdFromTemplate = this.notFound
-      }
-    }
-    if (type == 'faultType') {
-      let faultFound = this.faultList.filter(f => f.name == modelName)
-      if (faultFound.length > 0) {
-        faultFound.map(f => { this.faultIdFromTemplate = f.id!; this.fault.name = f.name! })
-      }
-      else {
-        this.faultIdFromTemplate = this.notFound
-      }
-    }
-    if (type == 'ownerType') {
-      let ownerFound = this.ownerList.filter(o => o.firstName == modelName)
-      if (ownerFound.length > 0) {
-        ownerFound.map(o => { this.ownerIdFromTemplate = o.id!; this.owner.firstName = o.firstName! })
-      }
-      else {
-        this.ownerIdFromTemplate = this.notFound
-      }
-    }
+    //if (type == 'productType') {
+    //  this.prodIdFromTemplate = ''
+    //  let productFound = this.productList.filter(p => p.productName?.toLowerCase().trim() == modelName?.toLowerCase().trim())
+    //  if (productFound.length > 0) {
+    //    productFound.map(p => { this.prodIdFromTemplate = p.id!; this.product.productName = p.productName! })
+    //  }
+    //  else {
+    //    this.prodIdFromTemplate = this.notFound
+    //  }
+    //}
+    //if (type == 'faultType') {
+    //  this.faultIdFromTemplate = ''
+    //  let faultFound = this.faultList.filter(f => f.name?.toLowerCase().trim() == modelName?.toLowerCase().trim())
+    //  if (faultFound.length > 0) {
+    //    faultFound.map(f => { this.faultIdFromTemplate = f.id!; this.fault.name = f.name! })
+    //  }
+    //  else {
+    //    this.faultIdFromTemplate = this.notFound
+    //  }
+    //}
+    //if (type == 'ownerType') {
+    //  this.ownerIdFromTemplate = ''
+    //  let ownerFound = this.ownerList.filter(o => o.firstName?.toLowerCase().trim() == modelName?.toLowerCase().trim())
+    //  if (ownerFound.length > 0) {
+    //    ownerFound.map(o => { this.ownerIdFromTemplate = o.id!; this.owner.firstName = o.firstName! })
+    //  }
+    //  else {
+    //    this.ownerIdFromTemplate = this.notFound
+    //  }
+    //}
 
 
   }
-
-
 
   toggleBatch() {
     this.batchDateToggle = !this.batchDateToggle;
   }
 
   save() {
+
+    this.checkFormValidity()
+
     if (this.form.invalid) {
-      this.form.markAllAsTouched()
-      console.log("Form is invalid")
-      console.log("Customer valid?: " + this.getCustomer.valid)
-      console.log("Product valid?: " + this.getProduct.valid)
-      console.log("Fault valid?: " + this.getFault.valid)
-      console.log("Owner valid?: " + this.getOwner.valid)
-      console.log("User id is: " + this.userId)
       return
     }
-
-    this.message = 'Return Saved'
-    this.showToast = true
 
     const createdReturn: ReturnDto = {
       docDate: this.form.get('docDate')?.value!,
@@ -207,11 +226,32 @@ export class AddNewComponent implements OnInit {
       comment: this.form.get('comment')?.value!,
       userId: this.userId!
     }
-
+    this.message = 'Return Saved'
+    this.showToast = true
 
 
     this.returnService.createReturnReturn({ body: createdReturn }).subscribe(_ => { this.appService.setMessage(this.message); this.appService.showToast(this.showToast) }, this.handleError)
     this.router.navigate(['/search-returns'])
+  }
+
+  private checkFormValidity() {
+    if (this.getCustomer.value?.customerName == undefined || this.getCustomer.value.customerName == '' || this.getCustomer.value.id == this.notFound)
+    {
+      this.getCustomer.invalid
+      this.custIdFromTemplate = 'none'
+    }
+    if (this.getProduct.value?.productName == undefined || this.getProduct.value?.productName == '' || this.getProduct.value?.id == this.notFound) {
+      this.getProduct.invalid
+      this.prodIdFromTemplate = 'none'
+    }
+    if (this.getFault.value?.faultName == undefined || this.getFault.value?.faultName == '' || this.getFault.value?.id == this.notFound) {
+      this.getFault.invalid
+      this.faultIdFromTemplate = 'none'
+    }
+    if (this.getOwner.value?.ownerName == undefined || this.getOwner.value?.ownerName == '' || this.getOwner.value?.id == this.notFound) {
+      this.getOwner.invalid
+      this.ownerIdFromTemplate = 'none'
+    }
   }
 
   private handleError = (err: any) => {
@@ -279,11 +319,31 @@ export class AddNewComponent implements OnInit {
     address: [''],
     shortCode: [''],
   })
+
+  newProductForm = this.fb.group({
+    productName: [''],
+    price: [0.00],
+    weight: [0.00],
+    shortCode: [''],
+  })
+
   //
-    //customer Modal
+
+  //Modal Properties
+  customerIdFromModal = ''
+  customerShortCodeFromTemplate = ''
+  customerAlreadyExists = 'Customer already exists'
+  customerShortCodeAlreadyExists = 'Short code already exists'
+
+  productIdFromModal = ''
+  productShortCodeFromTemplate = ''
+  productAlreadyExists = 'Product already exists'
+  productShortCodeAlreadyExists = 'Short code already exists'
+
+  //customer Modal
   openCustomerModal(content: any) {
     this.newCustomerForm.reset()
-    this.customerIdFromTemplate = ''
+    this.customerIdFromModal = ''
     this.customerShortCodeFromTemplate = ''
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
@@ -297,6 +357,87 @@ export class AddNewComponent implements OnInit {
     );
   }
 
+  openProductModal(content: any) {
+    console.log("Product Modal opened")
+    this.newProductForm.reset()
+    this.productIdFromModal = ''
+    this.productShortCodeFromTemplate = ''
+
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+        this.saveNewproduct()
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      },
+    );
+  }
+
+
+  //modal save methods
+
+  saveNewCustomer(): void {
+    if (this.customerIdFromModal == this.customerAlreadyExists || this.customerShortCodeFromTemplate == this.customerShortCodeAlreadyExists) {
+      return
+    }
+
+    let newCustomer: CustomerRm = {
+      customerName: this.newCustomerForm.controls.customerName.value?.trim(),
+      email: this.newCustomerForm.controls.email.value?.trim(),
+      address: this.newCustomerForm.controls.address.value?.trim(),
+      shortCode: this.newCustomerForm.controls.shortCode.value?.trim()
+    }
+
+    this.customerService.createCustomer({ body: newCustomer }).subscribe(c => {
+      //this.showToast = true
+      //this.message = 'Customer added successfully'
+      console.log('1. Saved, then getModel gest called')
+      this.getModel(newCustomer.customerName!, 'customerType')
+      console.log('5. Trying to add customer to form')
+      this.form.controls.customer.setValue({ id: this.custIdFromTemplate, customerName: newCustomer.customerName! })
+      //else if (this.newCustomerForm.valid && !this.form.touched && !this.form.dirty) {
+      //  this.message = 'Nothing added'
+      //  console.log('Nothing added')
+      //}
+      //this.appService.setMessage(this.message);
+      //this.appService.showToast(this.showToast)
+      console.log('6. Trying to set customer {' + newCustomer.customerName + '} The id is: {' + this.custIdFromTemplate + '}')
+    })
+
+  }
+  saveNewproduct(): void {
+    if (this.productIdFromModal == this.productAlreadyExists || this.productShortCodeFromTemplate == this.productShortCodeAlreadyExists) {
+      return
+    }
+
+    let newProduct: ProductRm = {
+      productName: this.newProductForm.controls.productName.value?.trim(),
+      price: this.newProductForm.controls.price.value!,
+      weight: this.newProductForm.controls.weight.value!,
+      shortCode: this.newProductForm.controls.shortCode.value?.trim()
+    }
+
+    this.productService.createProduct({ body: newProduct }).subscribe(c => {
+      //this.showToast = true
+      //this.message = 'product added successfully'
+      console.log('1. Saved, then getModel gest called')
+      this.getModel(newProduct.productName!, 'productType')
+      console.log('5. Trying to add product to form')
+      this.form.controls.product.setValue({ id: this.prodIdFromTemplate, productName: newProduct.productName! })
+      //else if (this.newproductForm.valid && !this.form.touched && !this.form.dirty) {
+      //  this.message = 'Nothing added'
+      //  console.log('Nothing added')
+      //}
+      //this.appService.setMessage(this.message);
+      //this.appService.showToast(this.showToast)
+      console.log('6. Trying to set product {' + newProduct.productName + '} The id is: {' + this.prodIdFromTemplate + '}')
+    })
+
+  }
+
+  //Modal extension Methods
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -306,52 +447,12 @@ export class AddNewComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-    //customer Modal
-  //modal extensions
-  customerIdFromTemplate = ''
-  customerShortCodeFromTemplate = ''
-  customerAlreadyExists = 'Customer already exists'
-  customerShortCodeAlreadyExists = 'Short code already exists'
-
-
-  saveNewCustomer() {
-    if (this.customerIdFromTemplate == this.customerAlreadyExists || this.customerShortCodeFromTemplate == this.customerShortCodeAlreadyExists) {
-      return
-    }
-
-    let newCustomer: CustomerRm = {
-      customerName: this.newCustomerForm.controls.customerName.value,
-      email: this.newCustomerForm.controls.email.value,
-      address: this.newCustomerForm.controls.address.value,
-      shortCode: this.newCustomerForm.controls.shortCode.value
-    }
-
-    this.customerService.createCustomer({ body: newCustomer }).subscribe(() => {
-      this.showToast = true
-      if (this.form.valid) {
-        this.message = 'Customer added successfully'
-        console.log('Customer added successfully')
-        this.customerList = []
-        this.customerService.searchCustomer().subscribe(c => this.customerList = c, this.handleError)
-      }
-      else if (this.form.valid && !this.form.touched && !this.form.dirty) {
-        this.message = 'Nothing added'
-        console.log('Nothing added')
-      }
-      //this.appService.setMessage(this.message);
-      //this.appService.showToast(this.showToast)
-      console.log('customer control raw value: ' + this.form.controls.customer.value)
-    })
-
-  }
 
   customerExists(customerName: string) {
-    this.customerIdFromTemplate = ''
-    if (this.customer.customerName?.toLowerCase().trim() != customerName.toLowerCase().trim()) {
+    this.customerIdFromModal = ''
       let customerFound = this.customerList.filter(c => c.customerName?.toLowerCase().trim() == customerName.toLowerCase().trim())
       if (customerFound.length > 0) {
-        this.customerIdFromTemplate = this.customerAlreadyExists
-      }
+        this.customerIdFromModal = this.customerAlreadyExists
     }
   }
 
@@ -361,6 +462,24 @@ export class AddNewComponent implements OnInit {
       let skuFound = this.customerList.filter(s => s.shortCode?.toLowerCase().trim() == shortCode.toLowerCase().trim())
       if (skuFound.length > 0) {
         this.customerShortCodeFromTemplate = this.customerShortCodeAlreadyExists
+      }
+    }
+  }
+
+  productExists(productName: string) {
+    this.productIdFromModal = ''
+    let productFound = this.productList.filter(p => p.productName?.toLowerCase().trim() == productName.toLowerCase().trim())
+    if (productFound.length > 0) {
+      this.productIdFromModal = this.productAlreadyExists
+    }
+  }
+
+  productShortCodeExists(shortCode: string) {
+    this.productShortCodeFromTemplate = ''
+    if (this.product.shortCode?.toLowerCase().trim() != shortCode.toLowerCase().trim()) {
+      let skuFound = this.productList.filter(s => s.shortCode?.toLowerCase().trim() == shortCode.toLowerCase().trim())
+      if (skuFound.length > 0) {
+        this.productShortCodeFromTemplate = this.productShortCodeAlreadyExists
       }
     }
   }

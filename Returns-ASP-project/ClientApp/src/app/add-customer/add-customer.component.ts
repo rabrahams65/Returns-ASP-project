@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerRm } from '../api/models';
-import { CustomerService } from '../api/services'; import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CustomerService } from '../api/services';
 
 @Component({
   selector: 'app-add-customer',
@@ -14,7 +14,7 @@ export class AddCustomerComponent implements OnInit {
   @Input() name: string | undefined;
 
   constructor(private activatedRoute: ActivatedRoute, private customerService: CustomerService, private fb: FormBuilder,
-    private router: Router, public activeModal: NgbActiveModal) { }
+    private router: Router) { }
   customerId = ''
   customer: CustomerRm = {}
   showToast = false
