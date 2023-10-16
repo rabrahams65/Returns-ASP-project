@@ -1,1 +1,3 @@
-{"ast":null,"code":"export default function getVariation(placement) {\n  return placement.split('-')[1];\n}","map":{"version":3,"names":["getVariation","placement","split"],"sources":["C:/Users/PC/source/repos/Returns-ASP-project/Returns-ASP-project/ClientApp/node_modules/@popperjs/core/lib/utils/getVariation.js"],"sourcesContent":["export default function getVariation(placement) {\n  return placement.split('-')[1];\n}"],"mappings":"AAAA,eAAe,SAASA,YAAY,CAACC,SAAS,EAAE;EAC9C,OAAOA,SAAS,CAACC,KAAK,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC;AAChC"},"metadata":{},"sourceType":"module","externalDependencies":[]}
+version https://git-lfs.github.com/spec/v1
+oid sha256:467f807dfc46911c4da09470c158f7b967466c2ee8503cc89bdaaeaf241a7c50
+size 602

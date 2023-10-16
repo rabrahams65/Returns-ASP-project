@@ -1,1 +1,3 @@
-{"ast":null,"code":"import { switchMap } from './switchMap';\nimport { identity } from '../util/identity';\nexport function switchAll() {\n  return switchMap(identity);\n}","map":{"version":3,"names":["switchMap","identity","switchAll"],"sources":["C:/Users/Rowan/source/repos/Returns-ASP-project/Returns-ASP-project/ClientApp/node_modules/rxjs/dist/esm/internal/operators/switchAll.js"],"sourcesContent":["import { switchMap } from './switchMap';\nimport { identity } from '../util/identity';\nexport function switchAll() {\n    return switchMap(identity);\n}\n"],"mappings":"AAAA,SAASA,SAAS,QAAQ,aAAa;AACvC,SAASC,QAAQ,QAAQ,kBAAkB;AAC3C,OAAO,SAASC,SAAS,GAAG;EACxB,OAAOF,SAAS,CAACC,QAAQ,CAAC;AAC9B"},"metadata":{},"sourceType":"module","externalDependencies":[]}
+version https://git-lfs.github.com/spec/v1
+oid sha256:0551e20e04c652e07f895fb47ba98a47cc5333bfdc28125a614c88b2f9d40124
+size 762

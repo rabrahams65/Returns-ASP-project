@@ -1,6 +1,3 @@
-{
-  "input": "http://localhost:5000/swagger/v1/swagger.json",
-  "output": "src/app/api",
-  "skipJsonSuffix": true,
-  "removeStaleFiles":  true
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:5d1f8867f8d520b3741a7dc53574c01efc0bc3d0c163f2b1d941d764d8460872
+size 151

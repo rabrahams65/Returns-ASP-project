@@ -1,1 +1,3 @@
-{"ast":null,"code":"var EventEmitter = require(\"events\");\nmodule.exports = new EventEmitter();","map":{"version":3,"names":["EventEmitter","require","module","exports"],"sources":["C:/Users/Rowan/source/repos/Returns-ASP-project/Returns-ASP-project/ClientApp/node_modules/webpack/hot/emitter.js"],"sourcesContent":["var EventEmitter = require(\"events\");\nmodule.exports = new EventEmitter();\n"],"mappings":"AAAA,IAAIA,YAAY,GAAGC,OAAO,CAAC,QAAQ,CAAC;AACpCC,MAAM,CAACC,OAAO,GAAG,IAAIH,YAAY,EAAE"},"metadata":{},"sourceType":"script","externalDependencies":[]}
+version https://git-lfs.github.com/spec/v1
+oid sha256:843e3892bdf50632be5587d3e77821fc9a8c8f820ab73edea4867285d0a6c803
+size 563

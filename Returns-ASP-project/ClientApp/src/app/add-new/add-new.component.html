@@ -121,6 +121,84 @@
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
   </div>
 </ng-template>
+
+<ng-template #ownerContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add New Owner</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="newOwnerForm">
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Owner First Name</label>
+          <div *ngIf="newOwnerForm.controls.ownerFirstName.touched && ownerModalValue.value == ''" class="invalid-feedback d-block mb-3">
+            <div *ngIf="newOwnerForm.controls.ownerFirstName.errors?.['required']">Owner First Name is required</div>
+          </div>
+          <div class="input-group">
+            <input #ownerModalValue
+                   type="text"
+                   class="form-control"
+                   formControlName="ownerFirstName"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Owner Last Name</label>
+          <div *ngIf="ownerModalValue.value != ''" class="invalid-feedback d-block mb-3">{{ownerIdFromModal}}</div>
+          <div class="input-group">
+            <input #ownerModalValue
+                   type="text"
+                   class="form-control"
+                   formControlName="ownerLastName" />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #faultContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add New Fault</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="newFaultForm">
+
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="form-label">Fault Name</label>
+          <div *ngIf="faultIdFromModal == faultAlreadyExists && faultModalValue.value != ''" class="invalid-feedback d-block mb-3">{{faultIdFromModal}}</div>
+          <div class="input-group">
+            <input #faultModalValue
+                   type="text"
+                   class="form-control"
+                   formControlName="faultName"
+                   (keyup)="faultExists(faultModalValue.value)" />
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3 col-12">
+        <label class="form-label">Description</label>
+        <textarea formControlName="description"
+                  class="form-control" rows="3"
+                  maxlength="255"></textarea>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
 <!--Modals-->
 
 <form [formGroup]="form" (ngSubmit)="save()">
@@ -208,7 +286,7 @@
                      [editable]="false"
                      formControlName="owner"
                      (blur)="getModel(ownerValue.value, 'ownerType')" />
-              <button class="btn btn-outline-secondary" [routerLink]="['/owner-detail']" type="button">+</button>
+              <button class="btn btn-outline-secondary" (click)="openOwnerModal(ownerContent)" type="button">+</button>
             </div>
           </div>
         </div>
@@ -228,7 +306,7 @@
                      [editable]="false"
                      formControlName="fault"
                      (blur)="getModel(faultValue.value, 'faultType')" />
-              <button class="btn btn-outline-secondary" [routerLink]="['/fault-detail']" type="button">+</button>
+              <button class="btn btn-outline-secondary" (click)="openFaultModal(faultContent)" type="button">+</button>
             </div>
           </div>
         </div>

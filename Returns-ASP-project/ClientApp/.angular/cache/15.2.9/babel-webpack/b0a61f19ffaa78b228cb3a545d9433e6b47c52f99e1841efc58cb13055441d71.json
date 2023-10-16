@@ -1,1 +1,3 @@
-{"ast":null,"code":"import { isFunction } from \"./isFunction\";\nexport function isPromise(value) {\n  return isFunction(value === null || value === void 0 ? void 0 : value.then);\n}","map":{"version":3,"names":["isFunction","isPromise","value","then"],"sources":["C:/Users/Rowan/source/repos/Returns-ASP-project/Returns-ASP-project/ClientApp/node_modules/rxjs/dist/esm/internal/util/isPromise.js"],"sourcesContent":["import { isFunction } from \"./isFunction\";\nexport function isPromise(value) {\n    return isFunction(value === null || value === void 0 ? void 0 : value.then);\n}\n"],"mappings":"AAAA,SAASA,UAAU,QAAQ,cAAc;AACzC,OAAO,SAASC,SAAS,CAACC,KAAK,EAAE;EAC7B,OAAOF,UAAU,CAACE,KAAK,KAAK,IAAI,IAAIA,KAAK,KAAK,KAAK,CAAC,GAAG,KAAK,CAAC,GAAGA,KAAK,CAACC,IAAI,CAAC;AAC/E"},"metadata":{},"sourceType":"module","externalDependencies":[]}
+version https://git-lfs.github.com/spec/v1
+oid sha256:d4755d3a806496fd737433cb34f754c61757918643ebd0d886e383b6cbd0f6bc
+size 841

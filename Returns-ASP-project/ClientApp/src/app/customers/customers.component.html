@@ -1,17 +1,29 @@
 <h2>Customers</h2>
 <hr />
 
+<ng-template #custDelContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add New Customer</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div>Are you sure you want to delete this customer?</div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Yes</button>
+  </div>
+</ng-template>
 
 <form class="row g-3 align-items-center">
   <div class="col-10">
     <div class="input-group">
       <div class="text"></div>
-      <input type="text" class="form-control" placeholder="Customer">
+      <input #phrase type="text" class="form-control" placeholder="Customer">
     </div>
   </div>
 
   <div class="col-2">
-    <button type="submit" class="btn btn-secondary">Search <i class="fa fa-search"></i></button>
+    <button type="submit" class="btn btn-secondary" (click)="search(phrase.value)">Search <i class="fa fa-search"></i></button>
   </div>
 
 </form>
@@ -29,18 +41,33 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let customer of customerList">
+    <tr *ngFor="let customer of customerList | slice: (page-1) * pageSize : page * pageSize">
       <td>{{customer.shortCode}}</td>
       <td>{{customer.customerName}}</td>
       <td>{{customer.email}}</td>
       <td>{{customer.address}}</td>
       <td>
         <button class="btn-primary btn me-3" [routerLink]="['/customer-detail', customer.id ]"><i class="fa fa-edit"></i></button>
-        <button class="btn-danger btn"><i class="fa fa-trash"></i></button>
+        <button class="btn-danger btn" (click)="openDeleteCustModal(custDelContent, customer.id!)"><i class="fa fa-trash"></i></button>
       </td>
     </tr>
   </tbody>
 </table>
+
+
+<ngb-pagination *ngIf="collectionSize != 0"
+                class="d-flex justify-content-center"
+                [collectionSize]="collectionSize"
+                [(page)]="page"
+                [boundaryLinks]="true"
+                (pageChange)="search"
+                [maxSize]="5"
+                [ellipses]="false"></ngb-pagination>
+
+<hr />
+<div class="text-end">
+  <p>Number of results: {{numberOfResults}}</p>
+</div>
 
 <div class="row col-12">
   <button type="button" class="btn btn-secondary" [routerLink]="['/add-customer']"><i class="fa fa-plus"></i> Add New Customer</button>

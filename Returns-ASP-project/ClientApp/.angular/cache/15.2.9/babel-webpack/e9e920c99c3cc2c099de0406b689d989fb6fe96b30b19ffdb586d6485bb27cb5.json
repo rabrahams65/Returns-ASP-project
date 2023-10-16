@@ -1,1 +1,3 @@
-{"ast":null,"code":"export const dateTimestampProvider = {\n  now() {\n    return (dateTimestampProvider.delegate || Date).now();\n  },\n  delegate: undefined\n};","map":{"version":3,"names":["dateTimestampProvider","now","delegate","Date","undefined"],"sources":["C:/Users/PC/source/repos/Returns-ASP-project/Returns-ASP-project/ClientApp/node_modules/rxjs/dist/esm/internal/scheduler/dateTimestampProvider.js"],"sourcesContent":["export const dateTimestampProvider = {\n    now() {\n        return (dateTimestampProvider.delegate || Date).now();\n    },\n    delegate: undefined,\n};\n"],"mappings":"AAAA,OAAO,MAAMA,qBAAqB,GAAG;EACjCC,GAAG,GAAG;IACF,OAAO,CAACD,qBAAqB,CAACE,QAAQ,IAAIC,IAAI,EAAEF,GAAG,EAAE;EACzD,CAAC;EACDC,QAAQ,EAAEE;AACd,CAAC"},"metadata":{},"sourceType":"module","externalDependencies":[]}
+version https://git-lfs.github.com/spec/v1
+oid sha256:c7b64f6feaf119697e814173ab6b9aeaeb0d606d03901c5bb2f55cf5a5ccae0f
+size 810

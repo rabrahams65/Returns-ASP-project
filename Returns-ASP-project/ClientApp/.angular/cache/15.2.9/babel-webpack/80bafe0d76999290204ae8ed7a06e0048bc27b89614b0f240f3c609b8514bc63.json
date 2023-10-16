@@ -1,1 +1,3 @@
-{"ast":null,"code":"export default function getFreshSideObject() {\n  return {\n    top: 0,\n    right: 0,\n    bottom: 0,\n    left: 0\n  };\n}","map":{"version":3,"names":["getFreshSideObject","top","right","bottom","left"],"sources":["C:/Users/PC/source/repos/Returns-ASP-project/Returns-ASP-project/ClientApp/node_modules/@popperjs/core/lib/utils/getFreshSideObject.js"],"sourcesContent":["export default function getFreshSideObject() {\n  return {\n    top: 0,\n    right: 0,\n    bottom: 0,\n    left: 0\n  };\n}"],"mappings":"AAAA,eAAe,SAASA,kBAAkB,GAAG;EAC3C,OAAO;IACLC,GAAG,EAAE,CAAC;IACNC,KAAK,EAAE,CAAC;IACRC,MAAM,EAAE,CAAC;IACTC,IAAI,EAAE;EACR,CAAC;AACH"},"metadata":{},"sourceType":"module","externalDependencies":[]}
+version https://git-lfs.github.com/spec/v1
+oid sha256:833b3174b55c29e55a8ddade729592b313db5ad6dda1cb7b332f9d4485631e97
+size 730

@@ -1,1 +1,3 @@
-{"ast":null,"code":"import { auto } from \"../enums.js\";\nexport default function getBasePlacement(placement) {\n  return placement.split('-')[0];\n}","map":{"version":3,"names":["auto","getBasePlacement","placement","split"],"sources":["C:/Users/Rowan/source/repos/Returns-ASP-project/Returns-ASP-project/ClientApp/node_modules/@popperjs/core/lib/utils/getBasePlacement.js"],"sourcesContent":["import { auto } from \"../enums.js\";\nexport default function getBasePlacement(placement) {\n  return placement.split('-')[0];\n}"],"mappings":"AAAA,SAASA,IAAI,QAAQ,aAAa;AAClC,eAAe,SAASC,gBAAgB,CAACC,SAAS,EAAE;EAClD,OAAOA,SAAS,CAACC,KAAK,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC;AAChC"},"metadata":{},"sourceType":"module","externalDependencies":[]}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ac48d17887c3878932233f56162c06e12787db0e28281c51781584108380ce35
+size 735

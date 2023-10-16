@@ -1,1 +1,3 @@
-{"ast":null,"code":"export function isValidDate(value) {\n  return value instanceof Date && !isNaN(value);\n}","map":{"version":3,"names":["isValidDate","value","Date","isNaN"],"sources":["C:/Users/Rowan/source/repos/Returns-ASP-project/Returns-ASP-project/ClientApp/node_modules/rxjs/dist/esm/internal/util/isDate.js"],"sourcesContent":["export function isValidDate(value) {\n    return value instanceof Date && !isNaN(value);\n}\n"],"mappings":"AAAA,OAAO,SAASA,WAAW,CAACC,KAAK,EAAE;EAC/B,OAAOA,KAAK,YAAYC,IAAI,IAAI,CAACC,KAAK,CAACF,KAAK,CAAC;AACjD"},"metadata":{},"sourceType":"module","externalDependencies":[]}
+version https://git-lfs.github.com/spec/v1
+oid sha256:677ef8bde39d8efd30ef368a95426a3ce1f6a96cec7e1ef26eeff88b1e5fa418
+size 614

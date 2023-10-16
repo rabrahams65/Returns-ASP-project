@@ -1,1 +1,3 @@
-{"ast":null,"code":"export function identity(x) {\n  return x;\n}","map":{"version":3,"names":["identity","x"],"sources":["C:/Users/PC/source/repos/Returns-ASP-project/Returns-ASP-project/ClientApp/node_modules/rxjs/dist/esm/internal/util/identity.js"],"sourcesContent":["export function identity(x) {\n    return x;\n}\n"],"mappings":"AAAA,OAAO,SAASA,QAAQ,CAACC,CAAC,EAAE;EACxB,OAAOA,CAAC;AACZ"},"metadata":{},"sourceType":"module","externalDependencies":[]}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ccec0826636c073c3fde11eae2fc1e98c407c98d82c584e622c0c60fc3acfafa
+size 459

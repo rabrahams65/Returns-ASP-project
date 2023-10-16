@@ -1,1 +1,3 @@
-{"ast":null,"code":"export default function getHTMLElementScroll(element) {\n  return {\n    scrollLeft: element.scrollLeft,\n    scrollTop: element.scrollTop\n  };\n}","map":{"version":3,"names":["getHTMLElementScroll","element","scrollLeft","scrollTop"],"sources":["C:/Users/Rowan/source/repos/Returns-ASP-project/Returns-ASP-project/ClientApp/node_modules/@popperjs/core/lib/dom-utils/getHTMLElementScroll.js"],"sourcesContent":["export default function getHTMLElementScroll(element) {\n  return {\n    scrollLeft: element.scrollLeft,\n    scrollTop: element.scrollTop\n  };\n}"],"mappings":"AAAA,eAAe,SAASA,oBAAoB,CAACC,OAAO,EAAE;EACpD,OAAO;IACLC,UAAU,EAAED,OAAO,CAACC,UAAU;IAC9BC,SAAS,EAAEF,OAAO,CAACE;EACrB,CAAC;AACH"},"metadata":{},"sourceType":"module","externalDependencies":[]}
+version https://git-lfs.github.com/spec/v1
+oid sha256:2c4d307feb296b1609f235564e33524fe2ea4b081aa5d01d85278e7e9ee37b63
+size 787
